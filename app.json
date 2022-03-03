@@ -20,7 +20,7 @@
       "value": "",
       "required": true
     },
-    "APP_HASH": {
+    "API_HASH": {
       "description": "Your Telegram App Hash",
       "value": "",
       "required": true
