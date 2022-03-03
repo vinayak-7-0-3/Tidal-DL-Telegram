@@ -4,7 +4,7 @@ class Config_NONENV(object):
     API_HASH = ""
     USER_SESSION = ""
 
-    AUTH_CHAT = ""
+    AUTH_CHAT = "123 123"
     ADMINS = "123 123"
 
     LOG_CHANNEL_ID = 1223
