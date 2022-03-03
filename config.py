@@ -5,7 +5,7 @@ class Config_NONENV(object):
     USER_SESSION = ""
 
     AUTH_CHAT = ""
-    ADMINS = ""
+    ADMINS = "123 123"
 
     LOG_CHANNEL_ID = 1223
     ALLOW_DUMP = "False"

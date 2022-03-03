@@ -89,7 +89,12 @@
       "description": "Username of the owner of the bot (use with or without @)",
       "value": "",
       "required": true
-    }
+    },
+    "ENV": {
+      "description": "Ignore this XD",
+      "value": "YEMS YEMS",
+      "required": true
+    },
   },
   "formation": {
     "worker": {
