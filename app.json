@@ -6,62 +6,90 @@
     "music",
     "uploader"
   ],
-  "website": "https://github.com",
-  "repository": "https://github.com",
-  "logo": "https://github.com",
-  "success_url": "https://github.com",
+  "website": "https://github.com/vinayak-7-0-3/Tidal-DL-Telegram",
+  "repository": "https://github.com/vinayak-7-0-3/Tidal-DL-Telegram",
+  "success_url": "https://github.com/vinayak-7-0-3/Tidal-DL-Telegram",
   "env": {
     "TG_BOT_TOKEN": {
-      "description": "Telegram bot token",
+      "description": "Your Telegram bot token",
       "value": "",
       "required": true
     },
     "APP_ID": {
-      "description": "Telegram App ID",
+      "description": "Your Telegram App ID",
       "value": "",
       "required": true
     },
     "APP_HASH": {
-      "description": "Telegram App Hash",
+      "description": "Your Telegram App Hash",
       "value": "",
       "required": true
     },
     "USER_SESSION": {
-      "description": "User session",
+      "description": "User string session for searching files",
       "value": "",
       "required": true
     },
     "AUTH_CHAT": {
-      "description": "Auth chat",
+      "description": "Chats where the bot will work",
       "value": "",
       "required": true
     },
     "ADMINS": {
-      "description": "Admins",
+      "description": "ID of Admins (ie SUDO Access)",
       "value": "",
       "required": true
     },
     "LOG_CHANNEL_ID": {
-      "description": "Log channel ID",
+      "description": "Log channel ID (Mandotary if setting below var to True)",
       "value": "",
-      "required": true
+      "required": false
     },
     "ALLOW_DUMP": {
       "description": "Allow dump",
-      "value": "",
+      "value": "False",
       "required": true
     },
     "SEARCH_CHANNEL": {
-      "description": "Search channel ID",
+      "description": "Channel/group ID to search already downloaded songs",
       "value": "",
       "required": true
     },
     "IS_BOT_PUBLIC": {
-      "description": "Is bot public",
+      "description": "Want to allow public access to bot ? (True/False)",
+      "value": "True",
+      "required": true
+    },
+    "AUTH_USERS": {
+      "description": "Users who can access the bot (needed only is bot set to private)",
+      "value": "",
+      "required": false
+    },
+    "INLINE_THUMB": {
+      "description": "Thumb/Icon for inline search",
+      "value": "",
+      "required": false
+    },
+    "TIDAL_REGION": {
+      "description": "Tidal region for search api (recomment to use default)",
       "value": "",
       "required": true
     },
-    
+    "TIDAL_SEARCH_LIMIT": {
+      "description": "Limit number of search results",
+      "value": "",
+      "required": true
+    },
+    "BOT_USERNAME": {
+      "description": "Username of your bot (use with or without @)",
+      "value": "",
+      "required": true
+    },
+    "OWNER_USERNAME": {
+      "description": "Username of the owner of the bot (use with or without @)",
+      "value": "",
+      "required": true
+    }
   },
   "formation": {
     "worker": {
@@ -71,10 +99,7 @@
   },
   "addons": [
     {
-      "plan": "heroku-postgresql",
-      "options": {
-        "version": "9.5"
-      }
+      "plan": "heroku-postgresql"
     }
   ],
   "buildpacks": [
