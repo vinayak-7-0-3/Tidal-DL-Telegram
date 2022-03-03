@@ -1,0 +1,6 @@
+pyrogram
+tgcrypto
+tidal-dl
+hachoir
+aiohttp
+psycopg2
