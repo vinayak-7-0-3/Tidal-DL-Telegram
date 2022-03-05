@@ -94,7 +94,7 @@
       "description": "Ignore this XD",
       "value": "YEMS YEMS",
       "required": true
-    },
+    }
   },
   "formation": {
     "worker": {
