@@ -64,23 +64,17 @@ You can use other search options.
 """
 
     INPUT_MESSAGE_TRACK = """
-<b>Title :</b> {0}
-
-<b>Artist :</b> {1}
-
-<b>Album :</b> {2}
-
-<b>Duration :</b> {3}
+💽 <b>Title :</b> {0}
+👤 <b>Artist :</b> {1}
+💿 <b>Album :</b> {2}
+🕒 <b>Duration :</b> {3}
 """
 
     INPUT_MESSAGE_ALBUM = """
-<b>Title :</b> {0}
-
-<b>Artist :</b> {1}
-
-<b>Tracks :</b> {2}
-
-<b>Release Date :</b> {3}
+💽 <b>Title :</b> {0}
+👤 <b>Artist :</b> {1}
+📀 <b>Tracks :</b> {2}
+📅 <b>Release Date :</b> {3}
 """
 
     INLINE_MEDIA_SEARCH = """
@@ -94,17 +88,12 @@ You can use other search options.
 #
 #
     ALBUM_DETAILS = """
-<b>Title :</b> {0}
-
-<b>Artist :</b> {1}
-
-<b>Release Date :</b> {2}
-
-<b>Number of Tracks :</b> {3}
-
-<b>Duration :</b> {4}
-
-<b>Number of Volumes :</b> {5}
+💽 <b>Title :</b> {0}
+👤 <b>Artist :</b> {1}
+📅<b>Release Date :</b> {2}
+📀 <b>Number of Tracks :</b> {3}
+🕒 <b>Duration :</b> {4}
+🔢 <b>Number of Volumes :</b> {5}
 """
 #
 #
