@@ -76,4 +76,4 @@ authed - Shows list of chats where bot is allowed to run
 #### It is recommened not to change other values in the JSON
 
 ## Credits
-#### Yarronzz - For his Tidal-dl CLI
+#### Yarronzz - For his [Tidal-dl CLI](https://github.com/yaronzz/Tidal-Media-Downloader)
