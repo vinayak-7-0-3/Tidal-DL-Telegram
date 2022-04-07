@@ -16,6 +16,14 @@ Use the below button to deploy the bot in Heroku.
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
+## Koyeb Deploy
+Use the below button to deploy the bot in Koyeb.
+
+[![Deploy to Koyeb](https://www.koyeb.com/static/images/deploy/button.svg)](https://app.koyeb.com/deploy?type=git&repository=github.com/vinayak-7-0-3/Tidal-DL-Telegram&branch=main&name=tidal-dl-tg&run_command=python%20-m%20bot&env[TG_BOT_TOKEN]=&env[APP_ID]=&env[API_HASH]=&env[USER_SESSION]=&env[AUTH_CHAT]=&env[ADMINS]=&env[ALLOW_DUMP]=False&env[IS_BOT_PUBLIC]=True&env[TIDAL_REGION]=IN&env[TIDAL_SEARCH_LIMIT]=10&env[BOT_USERNAME]=&env[OWNER_USERNAME]=&env[DATABASE_URL]=&env[ENV]=True)
+
+- Fill all the Variables (In Environment Variable Section)
+- For Database URL use Heroku Postgres or ElephantSQL
+
 ## Variables Details
 **-> Required variables**
 
@@ -32,11 +40,13 @@ Use the below button to deploy the bot in Heroku.
 - `TIDAL_SEARCH_LIMIT` - Limit the number of search results.
 - `BOT_USERNAME` - Username of your bot.
 - `OWNER_USERNAME` - Owner of the bot username (used for contact button, use any other username as you like)
+- `DATABASE_URL` - Postgres Database URL
 
 **-> Optional variables**
 - `LOG_CHANNEL_ID` - Group/Channel ID where bot stores all the downloaded files (Mandatory if set ALLOW_DUMP = True)
 - `AUTH_USERS` - List of User ID who can use the bot (Only needed if IS_BOT_PUBLIC = False)
 - `INLINE_THUMB` - Logo to be shown in inline search results. (Use CDN links for better performance)
+- `ENV` - Set to True if using ENV Variables.
 
 
 
