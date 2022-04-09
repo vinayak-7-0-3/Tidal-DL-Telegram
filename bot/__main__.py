@@ -30,7 +30,7 @@ class Bot(Client):
         await super().stop()
         LOGGER.info('Exiting User........')
         await USER.stop()
-        LOGGER.info('Bot Stopped ! Bye..........')
+        LOGGER.info('Bot and User Exited Successfully ! Bye..........')
 
 if __name__ == "__main__":
     if not os.path.isdir(Config.DOWNLOAD_BASE_DIR):

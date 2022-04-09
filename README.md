@@ -24,6 +24,16 @@ Use the below button to deploy the bot in Koyeb.
 - Fill all the Variables (In Environment Variable Section)
 - For Database URL use Heroku Postgres or ElephantSQL
 
+## Deploy Locally
+Rename example.env to .env and fill all those required variables.
+```
+virtualenv -p python3 VENV
+. ./VENV/bin/activate
+pip install -r requirements.txt
+python -m bot
+```
+- For Database URL use Heroku Postgres or ElephantSQL
+
 ## Variables Details
 **-> Required variables**
 
@@ -34,7 +44,6 @@ Use the below button to deploy the bot in Koyeb.
 - `AUTH_CHAT` - List of Chat ID where Bot will work.
 - `ADMINS` - List of User ID who has full access to the Bot.
 - `ALLOW_DUMP` - Whether to store the downloaded files in any group/channel. (True/False)
-- `SEARCH_CHANNEL` - ID of channel/gropup to search downloaded/other songs files direcly
 - `IS_BOT_PUBLIC` - Whether to allow bot usage for public. (True/False)
 - `TIDAL_REGION` - Country code for Tidal Song search. (In international format eg:IN)
 - `TIDAL_SEARCH_LIMIT` - Limit the number of search results.
@@ -47,6 +56,7 @@ Use the below button to deploy the bot in Koyeb.
 - `AUTH_USERS` - List of User ID who can use the bot (Only needed if IS_BOT_PUBLIC = False)
 - `INLINE_THUMB` - Logo to be shown in inline search results. (Use CDN links for better performance)
 - `ENV` - Set to True if using ENV Variables.
+- `SEARCH_CHANNEL` - ID of channel/gropup to search downloaded/other songs files direcly
 
 
 
