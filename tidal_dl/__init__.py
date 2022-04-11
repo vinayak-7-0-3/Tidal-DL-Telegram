@@ -8,10 +8,8 @@
 @Contact :   yaronhuang@foxmail.com
 @Desc    :   
 '''
-import base64
 from faulthandler import disable
 import getopt
-import logging
 import ssl
 import sys
 import time
@@ -32,11 +30,15 @@ from tidal_dl.util import API, CONF, TOKEN, LANG, displayTime, loginByConfig, lo
 import tidal_dl.apiKey as apiKey
 
 from bot.helpers.translations import lang
+from bot.helpers.database.postgres_impl import TidalSettings
+from bot.helpers.buttons.settings_buttons import tidal_auth_set
+
+set_db = TidalSettings()
 
 ssl._create_default_https_context = ssl._create_unverified_context
 
-def login(bot=None, chat_id=None, reply_to_id=None):
-    if bot:
+def login(bot=None, chat_id=None, update=None):
+    """if bot:
         td_msg = bot.send_message(
             chat_id=chat_id,
             text=LANG.AUTH_START_LOGIN,
@@ -44,7 +46,7 @@ def login(bot=None, chat_id=None, reply_to_id=None):
             disable_web_page_preview=True
         )
     else:
-        print(LANG.AUTH_START_LOGIN)
+        print(LANG.AUTH_START_LOGIN)"""
     msg, check = API.getDeviceCode()
     if not check:
         Printf.err(msg)
@@ -54,17 +56,18 @@ def login(bot=None, chat_id=None, reply_to_id=None):
     if bot:
         bot.edit_message_text(
             chat_id=chat_id,
-            message_id=td_msg.message_id, 
+            message_id=update.message.message_id, 
             text=LANG.AUTH_NEXT_STEP.format(
                 "http://" + API.key.verificationUrl + "/" + API.key.userCode, 
                 displayTime(API.key.authCheckTimeout)
-            )
+            ),
+            disable_web_page_preview=True
         )
     else:
         print(LANG.AUTH_NEXT_STEP.format(green("http://" + API.key.verificationUrl + "/" + API.key.userCode), yellow(displayTime(API.key.authCheckTimeout))))
         print(LANG.AUTH_WAITING)
     if bot:
-        loginByWeb(bot, chat_id, td_msg)
+        loginByWeb(bot, chat_id, update)
     else:
         loginByWeb()
     return
@@ -111,15 +114,24 @@ def setAPIKey():
     return False
 
 
-def checkLogin(bot=None, chat_id=None, reply_to_id=None, first_auth=False):
-    if loginByConfig(bot, chat_id, reply_to_id):
+def checkLogin(bot=None, chat_id=None, update=None, force_auth=False):
+    txt, _ = set_db.get_variable("AUTH_DONE")
+    if txt:
+        try:
+            bot.edit_message_text(
+                chat_id=chat_id,
+                text=lang.ALREADY_AUTH.format(
+                    displayTime(int(TOKEN.expiresAfter - time.time()))
+                ),
+                message_id=update.message.message_id,
+                reply_markup=tidal_auth_set()
+            )
+        except:
+            pass
         return True
     else:
-        if first_auth:
-            if bot:
-                login(bot, chat_id, reply_to_id)
-            else:
-                login()
+        if force_auth:
+            login(bot, chat_id, update)
             return
         else:
             return False

@@ -172,10 +172,10 @@ async def start(user, conf, string, bot=None, chat_id=None, reply_to_id=None):
 
     is_authed = tidal_dl.checkLogin()
     if not is_authed:
-        return await bot.edit_message_text(
+        return await bot.send_message(
             chat_id=chat_id,
-            message_id=reply_to_id,
-            text=lang.AUTH_DISABLED
+            text=lang.AUTH_DISABLED,
+            reply_to_message_id=reply_to_id
         )
     strings = string.split(" ")
     for item in strings:
