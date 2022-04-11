@@ -29,14 +29,10 @@ class CMD(object):
     # Auth user or chat to use the bot
     # TODO Add cmd to remove auth
     AUTH = ["auth", f"auth@{bot}"]
-    # AUTH TIDAL
-    AUTH_TIDAL = ["auth_tidal", f"auth_tidal@{bot}"]
     # Add user as admin user
     ADD_ADMIN = ["add_sudo", f"add_sudo@{bot}"]
     # To execute shell cmds
     SHELL = ["shell", f"shell@{bot}"]
-    # Shows List Of Authed Chats
-    AUTHED_CHATS = ["authed", f"authed@{bot}"]
 
 USER = Client(
     session_name=Config.USER_SESSION,

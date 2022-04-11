@@ -24,8 +24,9 @@ The commands for the bot are described below:
 <code>/{1}</code> - Shows help message.
 <code>/{2}</code> - Shows the list of commands.
 <code>/{3}</code> - Downloads the song from Tidal Link.
-<code>/{4}</code> - Authenticates the bot <b>[OWNER ONLY]</b>.
-<code>/{5}</code> - Runs a shell command <b>[OWNER ONLY]</b>.
+<code>/{4}</code> - Authenticates the bot <b>[ADMIN ONLY]</b>.
+<code>/{5}</code> - Runs a shell command <b>[ADMIN ONLY]</b>.
+<code>/{6}</code> - Open Settings Panel of Bot. <b>[ADMIN ONLY]</b>.
 
 Help for each command is in shown when you type the command.
 
@@ -54,14 +55,6 @@ Flags are :
 """
     INLINE_PLACEHOLDER = "Click here for the help with search."
     INLINE_NO_RESULT = "No results found"
-    INLINE_NOT_AUTH = "You are not authenticated.\nContact @{} for authentication."
-    INLINE_NOT_AUTH_MSG = """
-You are not authenticated.
-
-Contact @{} for authentication
-
-You can use other search options.
-"""
 
     INPUT_MESSAGE_TRACK = """
 💽 <b>Title :</b> {0}
@@ -108,5 +101,10 @@ You can use other search options.
 #
 #
     INIT_SETTINGS_MENU = "<b>Welcome to Bot Settings Menu.</b>\n\nChoose the option to open its settings."
-    TIDAL_AUTH_PANEL = "<b>Configure Tidal Authentication</b>"
+    TIDAL_AUTH_PANEL = """
+<b>Configure Tidal Authentication
+
+NOTE:</b>
+Remove Auth button will remove authentication immediately
+Think Twice Before Presing XD"""
     AUTH_SUCCESFULL_MSG = "Authentication successful.\n\n"
