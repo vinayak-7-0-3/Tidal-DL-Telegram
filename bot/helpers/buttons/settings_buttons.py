@@ -24,17 +24,24 @@ def main_menu_set():
     ]
     return InlineKeyboardMarkup(inline_keyboard)
 
-def tidal_auth_set():
+def tidal_auth_set(final=False):
+    if final:
+        button2 = InlineKeyboardButton(
+            text="Remove Auth",
+            callback_data="tiset_remove_auth"
+        )
+    else:
+        button2 = InlineKeyboardButton(
+            text="Remove Auth",
+            callback_data="tiset_warn_auth"
+        )
     inline_keyboard = [
         [
             InlineKeyboardButton(
                 text="Add Auth",
                 callback_data="tiset_add_auth"
             ),
-            InlineKeyboardButton(
-                text="Remove Auth",
-                callback_data="tiset_remove_auth"
-            )
+            button2
         ],
         exit_button
     ]

@@ -15,7 +15,7 @@ async def start(bot, update):
         ),
         reply_to_message_id=update.message_id
     )
-    await asyncio.sleep(2)
+    await asyncio.sleep(1)
     await bot.edit_message_text(
         chat_id=update.chat.id,
         message_id=msg.message_id,

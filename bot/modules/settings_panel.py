@@ -40,6 +40,16 @@ async def tidal_panel_cb(bot, update):
         reply_markup=tidal_auth_set()
     )
 
+@Client.on_callback_query(filters.regex(pattern=r"^tiset_warn_auth"))
+async def tiset_warn_auth_cb(bot, update):
+    if check_id(update.from_user.id, restricted=True):
+        await bot.edit_message_text(
+            chat_id=update.message.chat.id,
+            message_id=update.message.message_id,
+            text=lang.TIDAL_AUTH_PANEL + lang.WARN_REMOVE_AUTH,
+            reply_markup=tidal_auth_set(True)
+        )
+
 @Client.on_callback_query(filters.regex(pattern=r"^tiset_remove_auth"))
 async def tiset_remove_auth_cb(bot, update):
     if check_id(update.from_user.id, restricted=True):

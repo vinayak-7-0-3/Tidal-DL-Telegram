@@ -101,10 +101,6 @@ Flags are :
 #
 #
     INIT_SETTINGS_MENU = "<b>Welcome to Bot Settings Menu.</b>\n\nChoose the option to open its settings."
-    TIDAL_AUTH_PANEL = """
-<b>Configure Tidal Authentication
-
-NOTE:</b>
-Remove Auth button will remove authentication immediately
-Think Twice Before Presing XD"""
+    TIDAL_AUTH_PANEL = "<b>Configure Tidal Authentication</b>\n\n"
     AUTH_SUCCESFULL_MSG = "Authentication successful.\n\n"
+    WARN_REMOVE_AUTH = "<b>You are about to remove authentication.</b>\n\nPress again to confirm."
