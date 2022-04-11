@@ -102,3 +102,11 @@ You can use other search options.
 #
     CHAT_AUTH = "Authorised the chat : {} successfully."
     ADD_ADMIN = "Added {} as admin user."
+#
+#
+# SETTINGS PANEL
+#
+#
+    INIT_SETTINGS_MENU = "<b>Welcome to Bot Settings Menu.</b>\n\nChoose the option to open its settings."
+    TIDAL_AUTH_PANEL = "<b>Configure Tidal Authentication</b>"
+    AUTH_SUCCESFULL_MSG = "Authentication successful.\n\n"

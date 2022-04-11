@@ -53,15 +53,6 @@ async def cmd_list(bot, update):
         disable_web_page_preview=True
     )
 
-@Client.on_message(filters.command(CMD.AUTHED_CHATS))
-async def get_authed_chats(bot, update):
-    msg = await get_chats(True)
-    await bot.send_message(
-        chat_id=update.chat.id,
-        text=msg,
-        reply_to_message_id=update.message_id
-    )
-
 @Client.on_message(filters.command(CMD.AUTH))
 async def auth_chat(bot, update):
     if check_id(update.from_user.id, restricted=True):

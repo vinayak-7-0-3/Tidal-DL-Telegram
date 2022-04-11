@@ -33,6 +33,7 @@ from tidal_dl.tidal import TidalAPI
 
 from bot import Config
 from bot.helpers.translations import lang
+from bot.helpers.buttons.settings_buttons import tidal_auth_set
 
 
 TOKEN = TokenSettings.read()
@@ -487,13 +488,14 @@ def displayTime(seconds, granularity=2):
 def loginByConfig(bot=None, chat_id=None, reply_to_id=None):
     if aigpy.stringHelper.isNull(TOKEN.accessToken):
         return False
-
+    print(TOKEN.accessToken)
     msg, check = API.verifyAccessToken(TOKEN.accessToken)
     if check:
         Printf.info(LANG.MSG_VALID_ACCESSTOKEN.format(displayTime(int(TOKEN.expiresAfter - time.time()))))
         API.key.countryCode = TOKEN.countryCode
         API.key.userId = TOKEN.userid
         API.key.accessToken = TOKEN.accessToken
+        #print(API.key.accessToken)
         if bot:
             bot.send_message(
                 chat_id=chat_id,
@@ -527,7 +529,7 @@ def loginByConfig(bot=None, chat_id=None, reply_to_id=None):
         TokenSettings.save(tmp)
         return False
 
-def loginByWeb(bot=None, chat_id=None, tdmsg=None):
+def loginByWeb(bot=None, chat_id=None, update=None):
     start = time.time()
     elapsed = 0
     while elapsed < API.key.authCheckTimeout:
@@ -542,9 +544,10 @@ def loginByWeb(bot=None, chat_id=None, tdmsg=None):
             if bot:
                 bot.edit_message_text(
                     chat_id=chat_id,
-                    message_id=tdmsg.message_id,
-                    text=LANG.MSG_VALID_ACCESSTOKEN.format(displayTime(int(API.key.expiresIn))),
-                    disable_web_page_preview=True
+                    message_id=update.message.message_id,
+                    text=lang.AUTH_SUCCESFULL_MSG + LANG.MSG_VALID_ACCESSTOKEN.format(displayTime(int(API.key.expiresIn))),
+                    disable_web_page_preview=True,
+                    reply_markup=tidal_auth_set()
                 )
             else:
                 Printf.success(LANG.MSG_VALID_ACCESSTOKEN.format(displayTime(int(API.key.expiresIn))))
