@@ -87,6 +87,8 @@ Flags are :
 📀 <b>Number of Tracks :</b> {3}
 🕒 <b>Duration :</b> {4}
 🔢 <b>Number of Volumes :</b> {5}
+   <b>Sampling rate :</b> {6}
+   <b>Bit depth :</b> {7}
 """
 #
 #
