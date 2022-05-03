@@ -117,3 +117,6 @@ dmypy.json
 
 #ignore config.env
 config.env
+
+#tidal dl tokens
+tidal-dl.token.json

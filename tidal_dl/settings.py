@@ -83,21 +83,22 @@ class TokenSettings(ModelBase):
 
     @staticmethod
     def __getFilePath__():
-        return getSettingsPath() + '/.tidal-dl.token.json'
+        #return getSettingsPath() + '/.tidal-dl.token.json'
+        return "./tidal-dl.token.json"
 
 
 class Settings(ModelBase):
-    addLyrics = False
+    addLyrics = True
     lyricsServerProxy = ''
-    downloadPath = "./download/"
+    downloadPath = "./bot/DOWNLOADS"
     onlyM4a = False
-    addExplicitTag = True
+    addExplicitTag = False
     addHyphen = True
     addYear = False
     useTrackNumber = True
-    audioQuality = AudioQuality.Normal
+    audioQuality = AudioQuality.Master
     videoQuality = VideoQuality.P360
-    checkExist = True
+    checkExist = False
     artistBeforeTitle = False
     includeEP = True
     addAlbumIDBeforeFolder = False
@@ -107,12 +108,12 @@ class Settings(ModelBase):
     multiThreadDownload = True
     albumFolderFormat = R"{ArtistName}/{Flag} {AlbumTitle} [{AlbumID}] [{AlbumYear}]"
     trackFileFormat = R"{TrackNumber} - {ArtistName} - {TrackTitle}{ExplicitFlag}"
-    showProgress = True
+    showProgress = False
     showTrackInfo = True
-    saveAlbumInfo = False
+    saveAlbumInfo = True
     lyricFile = False
-    apiKeyIndex = 0
-    addTypeFolder = True
+    apiKeyIndex = 4
+    addTypeFolder = False
 
     @staticmethod
     def getDefaultAlbumFolderFormat():
@@ -170,4 +171,5 @@ class Settings(ModelBase):
 
     @staticmethod
     def __getFilePath__():
-        return getSettingsPath() + '/.tidal-dl.json'
+        #return getSettingsPath() + '/.tidal-dl.json'
+        return "./tidal-dl.json"
