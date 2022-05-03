@@ -35,6 +35,7 @@ Feel free to ask doubts in Discussion Group.
 
     INIT_DOWNLOAD = "Trying to initialize download..."
     ERR_NO_LINK = "No link found in message."
+    FILE_EXIST = "File already exist in the channel.\n\nTitle : <code>{}</code>\n\nClick below to get file."
 
     ALREADY_AUTH = "Your authentication is already done.\nIts is valid for {}"
     AUTH_DISABLED = "Cannot download because authentication is disabled."

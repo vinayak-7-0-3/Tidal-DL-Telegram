@@ -13,4 +13,9 @@ async def search_media_audio(query):
             link.append(message.link)
     return title, artist, link
 
-
+async def check_file_exist(title):
+    async for message in USER.search_messages(chat_id=Config.SEARCH_CHANNEL, limit=1, query=title, filter="empty"):
+        if message:
+            return True, message.link
+        else:
+            return False, None
