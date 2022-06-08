@@ -31,9 +31,12 @@ from tidal_dl.printf import Printf
 from tidal_dl.settings import Settings, TokenSettings, getLogPath
 from tidal_dl.tidal import TidalAPI
 
-from bot import Config
+from bot import Config, LOGGER
 from bot.helpers.translations import lang
+from bot.helpers.utils.media_search import check_file_exist_db
 from bot.helpers.buttons.settings_buttons import tidal_auth_set
+from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+
 
 
 TOKEN = TokenSettings.read()
@@ -350,6 +353,22 @@ def convert(srcPath, stream):
 
 async def downloadTrack(track: Track, album=None, playlist=None, userProgress=None, partSize=1048576, bot=None, chat_id=None, reply_to_id=None):
     try:
+        if Config.SEARCH_CHANNEL:
+            try:
+                msg_link = await check_file_exist_db(track.title, True)
+                if msg_link:
+                    await bot.send_message(
+                        chat_id=chat_id,
+                        text=lang.FILE_EXIST.format(track.title),
+                        reply_to_message_id=reply_to_id,
+                        reply_markup=InlineKeyboardMarkup([
+                            [InlineKeyboardButton(text="GET FILE", url=msg_link)]
+                            ])
+                    )
+                    LOGGER.info(track.title + " already exist")
+                    return
+            except Exception as e:
+                LOGGER.warning(e)
         msg, stream = API.getStreamUrl(track.id, CONF.audioQuality)
         if not aigpy.string.isNull(msg) or stream is None:
             Printf.err(track.title + "." + msg)
@@ -544,7 +563,7 @@ def loginByWeb(bot=None, chat_id=None, update=None):
             if bot:
                 bot.edit_message_text(
                     chat_id=chat_id,
-                    message_id=update.message.message_id,
+                    message_id=update.message.id,
                     text=lang.AUTH_SUCCESFULL_MSG + LANG.MSG_VALID_ACCESSTOKEN.format(displayTime(int(API.key.expiresIn))),
                     disable_web_page_preview=True,
                     reply_markup=tidal_auth_set()

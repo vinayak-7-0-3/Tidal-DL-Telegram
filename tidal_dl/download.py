@@ -15,7 +15,7 @@ import os
 
 from bot import Config
 from bot.helpers.translations import lang
-from bot.helpers.utils.media_search import check_file_exist
+from bot.helpers.utils.media_search import check_file_exist_db, check_post_tg
 
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
@@ -196,8 +196,11 @@ async def start(user, conf, string, bot=None, chat_id=None, reply_to_id=None):
 
         if Config.SEARCH_CHANNEL:
             try:
-                exist, msg_link = await check_file_exist(obj.title)
-                if exist:
+                if Type.Album or Type.Playlist or Type.Mix:
+                    msg_link = await check_post_tg(obj.title)
+                else:
+                    msg_link = await check_file_exist_db(obj.title, True)
+                if msg_link:
                     await bot.send_message(
                         chat_id=chat_id,
                         text=lang.FILE_EXIST.format(obj.title),

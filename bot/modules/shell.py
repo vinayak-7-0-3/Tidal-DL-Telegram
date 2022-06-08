@@ -29,7 +29,7 @@ def shell(bot, update):
                 bot.send_document(
                     document=doc,
                     filename=doc.name,
-                    reply_to_message_id=message.message_id,
-                    chat_id=message.chat_id)
+                    reply_to_message_id=message.id,
+                    chat_id=message.chat.id)
         else:
             update.reply_text(reply)
