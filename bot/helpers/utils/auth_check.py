@@ -29,7 +29,7 @@ async def get_chats(return_msg=False):
             if admin[0] not in admins and admin[0] != None:
                 admins.append(admin[0])
     # USERS
-    if not Config.IS_BOT_PUBLIC:
+    if not Config.IS_BOT_PUBLIC == "True":
         local_users = Config.AUTH_USERS
         database_users = users_db.get_users()
         for user in local_users:
@@ -46,7 +46,7 @@ async def get_chats(return_msg=False):
             msg += f"\n<code>{chat}</code>"
 
         msg += "\n\n<b>ALLOWED USERS</b>"
-        if Config.IS_BOT_PUBLIC:
+        if Config.IS_BOT_PUBLIC == "True":
             msg += "\nAllowed For Everyone"
         for user in allowed_users:
             msg += f"\n<code>{user}</code>"
@@ -69,7 +69,7 @@ def check_id(id=None, message=None, restricted=False):
             id = message.chat.id
         else:
             id = message.from_user.id
-        if Config.IS_BOT_PUBLIC:
+        if Config.IS_BOT_PUBLIC == "True":
             return True
         elif id in all_list:
             return True
