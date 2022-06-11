@@ -22,7 +22,7 @@ class Bot(Client):
     async def start(self):
         await super().start()
         await USER.start()
-        await start_api()
+        #await start_api()
         LOGGER.info("Bot Started...... Now Enjoy")
         await get_chats()
 
