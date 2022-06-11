@@ -1,4 +1,5 @@
 from bot import Config, USER
+from pyrogram import enums
 from bot.helpers.database.postgres_impl import music_db
 
 async def search_media_audio(query):
