@@ -8,6 +8,7 @@ Telegram bot to download Songs from Tidal.
 - Search songs inline using Tidal-API
 - Store downloaded songs to Channel/Group
 - Bot can configured for Public or Private use
+- Index Channel Feature for avoiding duplicate and search option
 
 **⚠️ Download Feature Won't Work Without A Tidal Premium Account ⚠️**
 
@@ -32,7 +33,7 @@ virtualenv -p python3 VENV
 pip install -r requirements.txt
 python -m bot
 ```
-- For Database URL use Heroku Postgres or ElephantSQL
+- For Database URL use Heroku Postgres (if on Heroku) or ElephantSQL
 
 ## Variables Details
 **-> Required variables**
@@ -70,9 +71,10 @@ start - Start the bot
 help - Shows Help Message
 download - Download songs from Tidal
 auth - Authorise a chat/user
-auth_tidal - Sign in with Tidal Ac [ADMIN ONLY]
+settings - Open Settings Panel [ADMIN ONLY]
 add_sudo - Add a user as Admin [ADMIN ONLY]
 shell - Run shell cmds [ADMIN ONLY]
+index - Index Search channel with Songs [ADMIN ONLY]
 authed - Shows list of chats where bot is allowed to run
 ```
 
