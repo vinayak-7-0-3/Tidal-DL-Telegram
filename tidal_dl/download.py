@@ -129,7 +129,7 @@ async def __artist__(conf, obj, bot, chat_id, reply_to_id):
     if not aigpy.string.isNull(msg):
         return
     for item in albums:
-        await __album__(conf, item)
+        await __album__(conf, item, bot, chat_id, reply_to_id)
 
 
 async def __playlist__(conf, obj, bot, chat_id, reply_to_id):
