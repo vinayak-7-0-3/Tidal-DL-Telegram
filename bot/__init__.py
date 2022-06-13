@@ -33,9 +33,12 @@ class CMD(object):
     ADD_ADMIN = ["add_sudo", f"add_sudo@{bot}"]
     # To execute shell cmds
     SHELL = ["shell", f"shell@{bot}"]
+    # To index audio files in a channel
+    INDEX = ["index", f"index@{bot}"]
 
 USER = Client(
-    session_name=Config.USER_SESSION,
+    name="TidalDlUser",
+    session_string=Config.USER_SESSION,
     api_id=Config.APP_ID,
     api_hash=Config.API_HASH
 )

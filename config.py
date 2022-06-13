@@ -40,7 +40,7 @@ class Config(object):
     except:
         SEARCH_CHANNEL = None
     
-    IS_BOT_PUBLIC = bool(getenv("IS_BOT_PUBLIC", True))
+    IS_BOT_PUBLIC = getenv("IS_BOT_PUBLIC", True)
     try:
         AUTH_USERS = set(int(x) for x in getenv("AUTH_USERS").split())
     except:

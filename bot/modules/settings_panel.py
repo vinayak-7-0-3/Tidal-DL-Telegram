@@ -15,7 +15,6 @@ async def settings(bot, update):
         await bot.send_message(
             chat_id=update.chat.id,
             text=lang.INIT_SETTINGS_MENU,
-            parse_mode="html",
             reply_markup=main_menu_set()
         )
 
@@ -25,7 +24,7 @@ async def tg_panel_cb(bot, update):
         msg = await get_chats(True)
         await bot.edit_message_text(
             chat_id=update.message.chat.id,
-            message_id=update.message.message_id,
+            message_id=update.message.id,
             text=msg,
             reply_markup=tg_auth_set()
         )
@@ -35,7 +34,7 @@ async def tg_panel_cb(bot, update):
 async def tidal_panel_cb(bot, update):
     await bot.edit_message_text(
         chat_id=update.message.chat.id,
-        message_id=update.message.message_id,
+        message_id=update.message.id,
         text=lang.TIDAL_AUTH_PANEL,
         reply_markup=tidal_auth_set()
     )
@@ -45,7 +44,7 @@ async def tiset_warn_auth_cb(bot, update):
     if check_id(update.from_user.id, restricted=True):
         await bot.edit_message_text(
             chat_id=update.message.chat.id,
-            message_id=update.message.message_id,
+            message_id=update.message.id,
             text=lang.TIDAL_AUTH_PANEL + lang.WARN_REMOVE_AUTH,
             reply_markup=tidal_auth_set(True)
         )
@@ -58,7 +57,7 @@ async def tiset_remove_auth_cb(bot, update):
         try:
             await bot.edit_message_text(
                 chat_id=update.message.chat.id,
-                message_id=update.message.message_id,
+                message_id=update.message.id,
                 text="Removed Tidal Login Successfully",
                 reply_markup=tidal_auth_set()
             )
@@ -78,7 +77,7 @@ async def close_cb(bot, update):
         try:
             await bot.delete_messages(
                 chat_id=update.message.chat.id,
-                message_ids=update.message.message_id
+                message_ids=update.message.id
             )
         except:
             pass
@@ -89,7 +88,7 @@ async def main_menu_cb(bot, update):
         try:
             await bot.edit_message_text(
                 chat_id=update.message.chat.id,
-                message_id=update.message.message_id,
+                message_id=update.message.id,
                 text=lang.INIT_SETTINGS_MENU,
                 reply_markup=main_menu_set()
             )

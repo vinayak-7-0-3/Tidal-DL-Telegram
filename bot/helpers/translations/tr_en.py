@@ -24,7 +24,7 @@ The commands for the bot are described below:
 <code>/{1}</code> - Shows help message.
 <code>/{2}</code> - Shows the list of commands.
 <code>/{3}</code> - Downloads the song from Tidal Link.
-<code>/{4}</code> - Authenticates the bot <b>[ADMIN ONLY]</b>.
+<code>/{4}</code> - Authenticates the bot in the chat<b>[ADMIN ONLY]</b>.
 <code>/{5}</code> - Runs a shell command <b>[ADMIN ONLY]</b>.
 <code>/{6}</code> - Open Settings Panel of Bot. <b>[ADMIN ONLY]</b>.
 
@@ -35,6 +35,7 @@ Feel free to ask doubts in Discussion Group.
 
     INIT_DOWNLOAD = "Trying to initialize download..."
     ERR_NO_LINK = "No link found in message."
+    FILE_EXIST = "File already exist in the channel.\n\nTitle : <code>{}</code>\n\nClick below to get file."
 
     ALREADY_AUTH = "Your authentication is already done.\nIts is valid for {}"
     AUTH_DISABLED = "Cannot download because authentication is disabled."
@@ -83,7 +84,7 @@ Flags are :
     ALBUM_DETAILS = """
 💽 <b>Title :</b> {0}
 👤 <b>Artist :</b> {1}
-📅<b>Release Date :</b> {2}
+📅 <b>Release Date :</b> {2}
 📀 <b>Number of Tracks :</b> {3}
 🕒 <b>Duration :</b> {4}
 🔢 <b>Number of Volumes :</b> {5}
@@ -95,6 +96,7 @@ Flags are :
 #
     CHAT_AUTH = "Authorised the chat : {} successfully."
     ADD_ADMIN = "Added {} as admin user."
+    NO_ID_PROVIDED = "No ID provided to add admin.\nReply to a person's message or provide the ID with the command."
 #
 #
 # SETTINGS PANEL
@@ -104,3 +106,12 @@ Flags are :
     TIDAL_AUTH_PANEL = "<b>Configure Tidal Authentication</b>\n\n"
     AUTH_SUCCESFULL_MSG = "Authentication successful.\n\n"
     WARN_REMOVE_AUTH = "<b>You are about to remove authentication.</b>\n\nPress again to confirm."
+#
+#
+# INDEXING
+#
+#
+    INIT_INDEX = "Initializing indexing...\nThis may take a while."
+    ERR_INDEX = "Error while indexing.\n\n{}"
+    INDEX_DONE = "Indexing done.\nTotal Files : {}"
+    ERR_NO_CHANNEL = "No channel found to index.\nPlease check you ENV variables"

@@ -5,6 +5,8 @@ import datetime
 
 from bot import Config
 
+#special_characters = ['!','#','$','%', '&','@','[',']',' ',']','_', ',', '.', ':', ';', '<', '>', '?', '\\', '^', '`', '{', '|', '}', '~']
+
 """
 TIDAL-DL SETTINGS VARS
 
@@ -226,7 +228,55 @@ class AuthedChats(DataBaseHandle):
     def __del__(self):
         super().__del__()
 
+class MusicDB(DataBaseHandle):
+    def __init__(self, dburl=None):
+        if dburl is None:
+            dburl = Config.DATABASE_URL
+        super().__init__(dburl)
+
+        music_schema = """CREATE TABLE IF NOT EXISTS music_table (
+            msg_id BIGINT UNIQUE,
+            title VARCHAR(2000) DEFAULT NULL
+        )"""
+
+        cur = self.scur()
+        try:
+            cur.execute(music_schema)
+        except psycopg2.errors.UniqueViolation:
+            pass
+
+        self._conn.commit()
+        self.ccur(cur)
+
+    def set_music(self, msg_id, title):
+        #title = ''.join(filter(lambda i:i not in special_characters, title))
+        sql = "SELECT * FROM music_table"
+        cur = self.scur()
+
+        sql = "INSERT INTO music_table(msg_id,title) VALUES(%s,%s)"
+        cur.execute(sql, (msg_id, title))
+
+        self.ccur(cur)
+
+    def get_music_id(self, title):
+        sql = "SELECT * FROM music_table WHERE title=%s"
+
+        cur = self.scur()
+
+        cur.execute(sql, (title,))
+        if cur.rowcount > 0:
+            row = cur.fetchone()
+            return row[0]
+        else:
+            return None
+
+        self.ccur(cur)
+
+    def __del__(self):
+        super().__del__()
+
 set_db = TidalSettings()
 users_db = AuthedUsers()
 admins_db = AuthedAdmins()
 chats_db = AuthedChats()
+music_db = MusicDB()

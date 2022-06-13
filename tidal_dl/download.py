@@ -15,8 +15,12 @@ import os
 
 from bot import Config
 from bot.helpers.translations import lang
+from bot.helpers.utils.media_search import check_file_exist_db, check_post_tg
+
+from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
 import aigpy
+from config import LOGGER
 import tidal_dl
 from tidal_dl.enums import Type
 from tidal_dl.model import Mix
@@ -59,7 +63,7 @@ async def post_album_details(album, bot, chat_id, reply_to_id):
             reply_to_message_id=reply_to_id
         )
         if Config.ALLOW_DUMP:
-            photo.copy(
+            await photo.copy(
                 chat_id=Config.LOG_CHANNEL_ID,
             )
         os.remove(album_art_path)
@@ -125,7 +129,7 @@ async def __artist__(conf, obj, bot, chat_id, reply_to_id):
     if not aigpy.string.isNull(msg):
         return
     for item in albums:
-        await __album__(conf, item)
+        await __album__(conf, item, bot, chat_id, reply_to_id)
 
 
 async def __playlist__(conf, obj, bot, chat_id, reply_to_id):
@@ -189,6 +193,26 @@ async def start(user, conf, string, bot=None, chat_id=None, reply_to_id=None):
         if etype == Type.Null or not aigpy.string.isNull(msg):
             Printf.err(msg + " [" + item + "]")
             return
+
+        if Config.SEARCH_CHANNEL:
+            try:
+                if Type.Album or Type.Playlist or Type.Mix:
+                    msg_link = await check_post_tg(obj.title)
+                else:
+                    msg_link = await check_file_exist_db(obj.title, True)
+                if msg_link:
+                    await bot.send_message(
+                        chat_id=chat_id,
+                        text=lang.FILE_EXIST.format(obj.title),
+                        reply_to_message_id=reply_to_id,
+                        reply_markup=InlineKeyboardMarkup([
+                            [InlineKeyboardButton(text="GET FILE", url=msg_link)]
+                            ])
+                    )
+                    LOGGER.info(obj.title + " already exist")
+                    return
+            except Exception as e:
+                LOGGER.warning(e)
 
         if etype == Type.Album:
             await __album__(conf, obj, bot, chat_id, reply_to_id)

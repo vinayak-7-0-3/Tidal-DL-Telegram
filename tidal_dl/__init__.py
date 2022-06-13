@@ -56,7 +56,7 @@ def login(bot=None, chat_id=None, update=None):
     if bot:
         bot.edit_message_text(
             chat_id=chat_id,
-            message_id=update.message.message_id, 
+            message_id=update.message.id, 
             text=LANG.AUTH_NEXT_STEP.format(
                 "http://" + API.key.verificationUrl + "/" + API.key.userCode, 
                 displayTime(API.key.authCheckTimeout)
@@ -123,7 +123,7 @@ def checkLogin(bot=None, chat_id=None, update=None, force_auth=False):
                 text=lang.ALREADY_AUTH.format(
                     displayTime(int(TOKEN.expiresAfter - time.time()))
                 ),
-                message_id=update.message.message_id,
+                message_id=update.message.id,
                 reply_markup=tidal_auth_set()
             )
         except:
