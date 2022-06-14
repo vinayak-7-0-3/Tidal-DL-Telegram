@@ -128,6 +128,12 @@ async def index_files(bot, update):
                 reply_to_message_id=update.id
             )
             await index_audio_files(Config.SEARCH_CHANNEL)
+            await asyncio.sleep(1)
+            await bot.edit_message_text(
+                chat_id=update.chat.id,
+                message_id=init.id,
+                text=lang.INDEX_DONE
+            )
         else:
             await bot.send_message(
                 chat_id=update.chat.id,
