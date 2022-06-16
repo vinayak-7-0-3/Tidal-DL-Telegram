@@ -6,6 +6,8 @@ from bot.helpers.database.postgres_impl import TidalSettings
 
 set_db = TidalSettings()
 
+listen_tidal = "CzET4vdadNUFQ5JU"
+
 async def search_track(query):
     title = []
     artist = []
@@ -16,6 +18,8 @@ async def search_track(query):
     http_sess = aiohttp.ClientSession()
 
     token, _ = set_db.get_variable("TIDAL_SEARCH_TOKEN")
+    if not token:
+        token = listen_tidal
     
     resp = await http_sess.get(
         "https://listen.tidal.com/v1/search",
@@ -29,6 +33,7 @@ async def search_track(query):
         headers={
             "x-tidal-token": token
         }
+        
     )
     for result in (await resp.json())['tracks']['items']:
         #print(result)
@@ -62,6 +67,9 @@ async def search_album(query):
     http_sess = aiohttp.ClientSession()
 
     token, _ = set_db.get_variable("TIDAL_SEARCH_TOKEN")
+    if not token:
+        token = listen_tidal
+
     resp = await http_sess.get(
         "https://listen.tidal.com/v1/search",
         params={
@@ -101,12 +109,13 @@ async def search_album(query):
 
 async def start_api():
     LOGGER.info("Initiating Tidal Search API")
-    http_sess = aiohttp.ClientSession()
+    """http_sess = aiohttp.ClientSession()
     resp = await http_sess.get("https://listen.tidal.com/")
     data = await resp.text()
+    print("\n\n\n\n"+data)
     resp = await http_sess.get(f"https://listen.tidal.com" + re.search(r'<script defer="defer" src=\"(/app.+?.js)\">', data)[1])
     data = await resp.text()
     token = re.search(r":\"(.{16})\":[a-z]+\(\)?", data)[1]
     set_db.set_variable("TIDAL_SEARCH_TOKEN", token)
-    await http_sess.close()
+    await http_sess.close()"""
     LOGGER.info("Tidal Search API initiated")

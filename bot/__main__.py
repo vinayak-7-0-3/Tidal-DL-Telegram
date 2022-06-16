@@ -1,7 +1,6 @@
 import os
-from bot import Config, USER, LOGGER
 from pyrogram import Client
-from bot.helpers.utils.tidal_api import start_api
+from bot import Config, USER, LOGGER
 from bot.helpers.utils.auth_check import get_chats
 
 plugins = dict(
@@ -22,7 +21,6 @@ class Bot(Client):
     async def start(self):
         await super().start()
         await USER.start()
-        #await start_api()
         LOGGER.info("Bot Started...... Now Enjoy")
         await get_chats()
 
