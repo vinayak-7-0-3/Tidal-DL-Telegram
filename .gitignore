@@ -120,3 +120,4 @@ config.env
 
 #tidal dl tokens
 tidal-dl.token.json
+TidalDLBot.session-journal

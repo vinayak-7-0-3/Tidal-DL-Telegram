@@ -172,4 +172,4 @@ class Settings(ModelBase):
     @staticmethod
     def __getFilePath__():
         #return getSettingsPath() + '/.tidal-dl.json'
-        return "./tidal-dl.json"
+        return "./.tidal-dl.json"

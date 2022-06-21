@@ -273,6 +273,7 @@ def setMetaData(track, album, filepath, contributors, lyrics):
         obj.title += ' (' + track.version + ')'
 
     obj.artist = list(map(lambda artist: artist.name, track.artists))  # __getArtists__(track.artists)
+    print(obj.artist)
     obj.copyright = track.copyRight
     obj.tracknumber = track.trackNumber
     obj.discnumber = track.volumeNumber
@@ -436,7 +437,7 @@ async def downloadTrack(track: Track, album=None, playlist=None, userProgress=No
                 thumb=thumb_path,
                 reply_to_message_id=reply_to_id
             )
-            if Config.ALLOW_DUMP:
+            if Config.ALLOW_DUMP=="True":
                 await media_file.copy(
                     chat_id=Config.LOG_CHANNEL_ID,
                 )
