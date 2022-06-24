@@ -194,7 +194,7 @@ async def start(user, conf, string, bot=None, chat_id=None, reply_to_id=None):
             Printf.err(msg + " [" + item + "]")
             return
 
-        if Config.SEARCH_CHANNEL:
+        if Config.SEARCH_CHANNEL and Config.USER_SESSION:
             try:
                 if Type.Album or Type.Playlist or Type.Mix:
                     msg_link = await check_post_tg(obj.title)

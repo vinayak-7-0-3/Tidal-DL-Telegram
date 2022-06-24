@@ -114,4 +114,4 @@ Flags are :
     INIT_INDEX = "Initializing indexing...\nThis may take a while."
     ERR_INDEX = "Error while indexing.\n\n{}"
     INDEX_DONE = "Indexing done."
-    ERR_NO_CHANNEL = "No channel found to index.\nPlease check you ENV variables"
+    ERR_VARS = "Required Variables Missing......\nPlease check everything again."

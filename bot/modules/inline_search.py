@@ -48,8 +48,11 @@ async def inline_search_tidal(_, event: InlineQuery):
             query = query[3:]
             msg, title, artist, url, thumb = await search_album(query)
         elif query.startswith("-d ") and Config.SEARCH_CHANNEL:
-            query = query[3:]
-            title, artist, links = await search_media_audio(query)
+            if Config.USER_SESSION:
+                query = query[3:]
+                title, artist, links = await search_media_audio(query)
+            else:
+                LOGGER.info("No User Session Provided For Search To Work")
         else:
             msg = None
 
@@ -85,6 +88,7 @@ async def inline_search_tidal(_, event: InlineQuery):
                     )
                 )
         elif links:
+
             for name in title:
                 answers.append(
                     InlineQueryResultArticle(
@@ -110,6 +114,12 @@ async def inline_search_tidal(_, event: InlineQuery):
                                     InlineKeyboardButton(
                                         text="File Here",
                                         url=links[title.index(name)]
+                                    )
+                                ],
+                                [
+                                    InlineKeyboardButton(
+                                        text="Join Music Storage",
+                                        url=Config.MUSIC_CHANNEL_LINK
                                     )
                                 ]
                             ]

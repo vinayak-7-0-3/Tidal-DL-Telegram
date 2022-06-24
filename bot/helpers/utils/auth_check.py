@@ -9,9 +9,8 @@ admins = []
 
 async def get_chats(return_msg=False):
     # CHATS 
-    local_config_chats = Config.AUTH_CHAT
     database_chats = chats_db.get_chats()
-    for chat in local_config_chats:
+    for chat in Config.AUTH_CHAT:
         if chat not in allowed_chats:
             allowed_chats.append(chat)
     for chat in database_chats:
@@ -19,9 +18,8 @@ async def get_chats(return_msg=False):
             if chat[0] not in allowed_chats and chat[0] != None:
                 allowed_chats.append(chat[0])
     # ADMINS
-    local_admins = Config.ADMINS
     database_admins = admins_db.get_admins()
-    for admin in local_admins:
+    for admin in Config.ADMINS:
         if admin not in admins:
             admins.append(admin)
     for admin in database_admins:
@@ -30,9 +28,8 @@ async def get_chats(return_msg=False):
                 admins.append(admin[0])
     # USERS
     if not Config.IS_BOT_PUBLIC == "True":
-        local_users = Config.AUTH_USERS
         database_users = users_db.get_users()
-        for user in local_users:
+        for user in Config.AUTH_USERS:
             if user not in allowed_users:
                 allowed_users.append(user)
         for user in database_users:
@@ -48,8 +45,11 @@ async def get_chats(return_msg=False):
         msg += "\n\n<b>ALLOWED USERS</b>"
         if Config.IS_BOT_PUBLIC == "True":
             msg += "\nAllowed For Everyone"
-        for user in allowed_users:
-            msg += f"\n<code>{user}</code>"
+        try:
+            for user in allowed_users:
+                msg += f"\n<code>{user}</code>"
+        except:
+            pass
 
         msg += "\n\n<b>ADMINS</b>"
         for admin in admins:

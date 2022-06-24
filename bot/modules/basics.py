@@ -121,7 +121,7 @@ async def add_admin(bot, update):
 @Client.on_message(filters.command(CMD.INDEX))
 async def index_files(bot, update):
     if check_id(update.from_user.id, restricted=True):
-        if Config.SEARCH_CHANNEL:
+        if Config.SEARCH_CHANNEL and Config.USER_SESSION:
             init = await bot.send_message(
                 chat_id=update.chat.id,
                 text=lang.INIT_INDEX,
@@ -137,14 +137,14 @@ async def index_files(bot, update):
         else:
             await bot.send_message(
                 chat_id=update.chat.id,
-                text=lang.ERR_NO_CHANNEL,
+                text=lang.ERR_VARS,
                 reply_to_message_id=update.id
             )
 
 @Client.on_message(filters.media)
 async def add_audio_to_db(bot, update):
     if update.audio:
-        if update.chat.id == Config.SEARCH_CHANNEL:
+        if update.chat.id == Config.SEARCH_CHANNEL and Config.USER_SESSION:
             if not await check_file_exist_db(update.audio.title):
                 music_db.set_music(update.id, update.audio.title)
 

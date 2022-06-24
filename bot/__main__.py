@@ -20,14 +20,16 @@ class Bot(Client):
 
     async def start(self):
         await super().start()
-        await USER.start()
+        if Config.USER_SESSION is not None:
+            await USER.start()
         LOGGER.info("Bot Started...... Now Enjoy")
         await get_chats()
 
     async def stop(self, *args):
         await super().stop()
         LOGGER.info('Exiting User........')
-        await USER.stop()
+        if Config.USER_SESSION is not None:
+            await USER.stop()
         LOGGER.info('Bot and User Exited Successfully ! Bye..........')
 
 if __name__ == "__main__":

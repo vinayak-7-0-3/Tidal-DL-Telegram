@@ -17,34 +17,40 @@ class Config(object):
         TG_BOT_TOKEN = getenv("TG_BOT_TOKEN")
         APP_ID = int(getenv("APP_ID", 123))
         API_HASH = getenv("API_HASH")
-        USER_SESSION = getenv("USER_SESSION")
+       
     except:
         LOGGER.warning("Essential TG Configs are missing")
         exit(1)
 
+    USER_SESSION = getenv("USER_SESSION", None)
+
     try:
         AUTH_CHAT = set(int(x) for x in getenv("AUTH_CHAT").split())
     except:
-        AUTH_CHAT = None
+        AUTH_CHAT = ""
     try:
         ADMINS = set(int(x) for x in getenv("ADMINS").split())
     except:
         LOGGER.warning("NO ADMIN USER IDS FOUND")
         exit(1)
 
-    LOG_CHANNEL_ID = int(getenv("LOG_CHANNEL_ID", -100))
+    try:
+        LOG_CHANNEL_ID = int(getenv("LOG_CHANNEL_ID"))
+    except:
+        LOG_CHANNEL_ID = -69
     ALLOW_DUMP = getenv("ALLOW_DUMP", False)
 
     try:
         SEARCH_CHANNEL = int(getenv("SEARCH_CHANNEL"))
     except:
-        SEARCH_CHANNEL = None
+        SEARCH_CHANNEL = LOG_CHANNEL_ID
     
     IS_BOT_PUBLIC = getenv("IS_BOT_PUBLIC", True)
+
     try:
         AUTH_USERS = set(int(x) for x in getenv("AUTH_USERS").split())
     except:
-        AUTH_USERS = None
+        AUTH_USERS = ""
 
     WORK_DIR = getenv("WORK_DIR", "./bot/")
     DOWNLOADS_FOLDER = getenv("DOWNLOADS_FOLDER", "DOWNLOADS")
@@ -60,14 +66,19 @@ class Config(object):
     if not BOT_USERNAME:
         LOGGER.warning("NO BOT USERNAME FOUND")
         exit(1)
-    OWNER_USERNAME = getenv("OWNER_USERNAME", "")
     
     DATABASE_URL = getenv("DATABASE_URL")
     if not DATABASE_URL:
         LOGGER.warning("NO DATABASE URL FOUND")
         exit(1)
 
+    MUSIC_CHANNEL_LINK = getenv("MUSIC_CHANNEL_LINK", "")
+
     if BOT_USERNAME.startswith("@"):
         BOT_USERNAME = BOT_USERNAME[1:]
-    if OWNER_USERNAME.startswith("@"):
-        OWNER_USERNAME = OWNER_USERNAME[1:]
+    if ALLOW_DUMP == "True" and USER_SESSION is None:
+        LOGGER.warning("You have set ALLOW_DUMP to True but no USER_SESSION provided.")
+        exit(1)
+    if ALLOW_DUMP == "True" and LOG_CHANNEL_ID == -69:
+        LOGGER.warning("You have set ALLOW_DUMP to True but have't provided any LOG_CHANNEL_ID.")
+        exit(1)
