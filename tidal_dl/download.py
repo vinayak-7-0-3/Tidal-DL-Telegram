@@ -62,7 +62,7 @@ async def post_album_details(album, bot, chat_id, reply_to_id):
             ),
             reply_to_message_id=reply_to_id
         )
-        if Config.ALLOW_DUMP:
+        if Config.ALLOW_DUMP=="True":
             await photo.copy(
                 chat_id=Config.LOG_CHANNEL_ID,
             )

@@ -33,7 +33,7 @@ class Config(object):
         exit(1)
 
     LOG_CHANNEL_ID = int(getenv("LOG_CHANNEL_ID", -100))
-    ALLOW_DUMP = bool(getenv("ALLOW_DUMP", False))
+    ALLOW_DUMP = getenv("ALLOW_DUMP", False)
 
     try:
         SEARCH_CHANNEL = int(getenv("SEARCH_CHANNEL"))
