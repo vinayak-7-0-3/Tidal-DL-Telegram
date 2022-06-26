@@ -34,11 +34,9 @@ Feel free to ask doubts in Discussion Group.
 """
 
     INIT_DOWNLOAD = "Trying to initialize download..."
-    ERR_NO_LINK = "No link found in message."
     FILE_EXIST = "File already exist in the channel.\n\nTitle : <code>{}</code>\n\nClick below to get file."
-
     ALREADY_AUTH = "Your authentication is already done.\nIts is valid for {}"
-    AUTH_DISABLED = "Cannot download because authentication is disabled."
+    NO_AUTH = "AUTH DISABLED"
 #
 #
 # INLINE MODE TEXTS..............................................................
@@ -103,15 +101,31 @@ Flags are :
 #
 #
     INIT_SETTINGS_MENU = "<b>Welcome to Bot Settings Menu.</b>\n\nChoose the option to open its settings."
-    TIDAL_AUTH_PANEL = "<b>Configure Tidal Authentication</b>\n\n"
-    AUTH_SUCCESFULL_MSG = "Authentication successful.\n\n"
+    TIDAL_AUTH_PANEL = "<b>Configure Tidal Authentication\n\nAuth Status : </b>{}"
+    AUTH_SUCCESFULL_MSG = "Authentication successful.\n\nIt is now valid for {}"
     WARN_REMOVE_AUTH = "<b>You are about to remove authentication.</b>\n\nPress again to confirm."
+    AUTH_NEXT_STEP = "Go to {} within the next {} to complete setup."
 #
 #
 # INDEXING
 #
 #
     INIT_INDEX = "Initializing indexing...\nThis may take a while."
-    ERR_INDEX = "Error while indexing.\n\n{}"
     INDEX_DONE = "Indexing done."
+#
+#
+# BUTTONS
+#
+#
+    JOIN_MUSIC_STORAGE = "Join Music Storage"
+    GET_FILE = "Get File"
+    LOGIN_TIDAL = "Click To Login"
+#
+#
+# ERRORS
+#
+#
     ERR_VARS = "Required Variables Missing......\nPlease check everything again."
+    ERR_AUTH_CHECK = "Couldn't download because : {}"
+    ERR_NO_LINK = "No link found in message."
+    ERR_INDEX = "Error while indexing.\n\n{}"

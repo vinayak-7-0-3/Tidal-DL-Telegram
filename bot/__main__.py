@@ -2,6 +2,7 @@ import os
 from pyrogram import Client
 from bot import Config, USER, LOGGER
 from bot.helpers.utils.auth_check import get_chats
+from bot.helpers.tidal_func.settings import SETTINGS, TOKEN
 
 plugins = dict(
     root="bot/modules"
@@ -20,6 +21,9 @@ class Bot(Client):
 
     async def start(self):
         await super().start()
+        LOGGER.info('Loading Tidal DL Configs........')
+        SETTINGS.read("./.tidal-dl.json")
+        TOKEN.read("./tidal-dl.token.json")
         if Config.USER_SESSION is not None:
             await USER.start()
         LOGGER.info("Bot Started...... Now Enjoy")

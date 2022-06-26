@@ -10,7 +10,6 @@ LOGGER = logging.getLogger(__name__)
 
 logging.getLogger("pyrogram").setLevel(logging.WARNING)
 logging.getLogger("urllib3").setLevel(logging.WARNING)
-logging.getLogger("hachoir").setLevel(logging.WARNING)
 logging.getLogger("aiohttp").setLevel(logging.WARNING)
 logging.getLogger("charset_normalizer").setLevel(logging.WARNING)
 

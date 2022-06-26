@@ -1,5 +1,5 @@
 import subprocess
-from bot import Config, CMD
+from bot import CMD
 from pyrogram import Client, filters
 from bot.helpers.utils.auth_check import check_id
 

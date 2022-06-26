@@ -1,11 +1,12 @@
-import tidal_dl
-from bot import CMD, LOGGER
+from bot import CMD
 from pyrogram import Client, filters
 from bot.helpers.translations import lang
 from bot.helpers.utils.auth_check import check_id
 from bot.helpers.utils.auth_check import get_chats
 from bot.helpers.buttons.settings_buttons import *
 from bot.helpers.database.postgres_impl import TidalSettings
+
+from bot.helpers.tidal_func.events import checkLogin, loginByWeb
 
 set_db = TidalSettings()
 
@@ -32,10 +33,11 @@ async def tg_panel_cb(bot, update):
 
 @Client.on_callback_query(filters.regex(pattern=r"^tidal_panel"))
 async def tidal_panel_cb(bot, update):
+    auth, msg = await checkLogin()
     await bot.edit_message_text(
         chat_id=update.message.chat.id,
         message_id=update.message.id,
-        text=lang.TIDAL_AUTH_PANEL,
+        text=lang.TIDAL_AUTH_PANEL.format(msg),
         reply_markup=tidal_auth_set()
     )
 
@@ -45,7 +47,7 @@ async def tiset_warn_auth_cb(bot, update):
         await bot.edit_message_text(
             chat_id=update.message.chat.id,
             message_id=update.message.id,
-            text=lang.TIDAL_AUTH_PANEL + lang.WARN_REMOVE_AUTH,
+            text=lang.WARN_REMOVE_AUTH,
             reply_markup=tidal_auth_set(True)
         )
 
@@ -65,10 +67,10 @@ async def tiset_remove_auth_cb(bot, update):
             pass
 
 @Client.on_callback_query(filters.regex(pattern=r"^tiset_add_auth"))
-def tiset_add_auth_cb(bot, update):
+async def tiset_add_auth_cb(bot, update):
     if check_id(update.from_user.id, restricted=True):
-        chat_id = update.message.chat.id
-        tidal_dl.checkLogin(bot, chat_id, update, True)
+        c_id = update.message.chat.id
+        await loginByWeb(bot, update, c_id)
         set_db.set_variable("AUTH_DONE", True, False, None)
 
 @Client.on_callback_query(filters.regex(pattern=r"^close"))
