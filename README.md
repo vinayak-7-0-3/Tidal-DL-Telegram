@@ -41,7 +41,6 @@ python -m bot
 - `TG_BOT_TOKEN` - The Telegram Bot Token. (Get from [@BotFather](https://t.me/BotFather))
 - `APP_ID` - Telegram account API ID. (Get it from [Telegram](https://my.telegram.org))
 - `API_HASH` - Telegram account API HASH String. (Get it from [Telegram](https://my.telegram.org))
-- `USER_SESSION` - Telegram account session string. (Generate from [HERE](https://replit.com/@vm703/Pyro-Session-Gen?lite=1&outputonly=1#main.py) or use any other Pyrogram Session Generator)
 - `AUTH_CHAT` - List of Chat ID where Bot will work.
 - `ADMINS` - List of User ID who has full access to the Bot.
 - `ALLOW_DUMP` - Whether to store the downloaded files in any group/channel. (True/False)
@@ -49,7 +48,6 @@ python -m bot
 - `TIDAL_REGION` - Country code for Tidal Song search. (In international format eg:IN)
 - `TIDAL_SEARCH_LIMIT` - Limit the number of search results.
 - `BOT_USERNAME` - Username of your bot.
-- `OWNER_USERNAME` - Owner of the bot username (used for contact button, use any other username as you like)
 - `DATABASE_URL` - Postgres Database URL
 
 **-> Optional variables**
@@ -58,11 +56,14 @@ python -m bot
 - `INLINE_THUMB` - Logo to be shown in inline search results. (Use CDN links for better performance)
 - `ENV` - Set to True if using ENV Variables.
 - `SEARCH_CHANNEL` - ID of channel/gropup to search downloaded/other songs files direcly
+- `USER_SESSION` - Telegram account session string. (Required for Searching and Indexing to work) (Generate from [HERE](https://replit.com/@vm703/Pyro-Session-Gen?lite=1&outputonly=1#main.py) or use any other Pyrogram Session Generator)
+- `MUSIC_CHANNEL_LINK` - For providing direct join link to the Music Storage Channel while searching for songs inline.
 
 
 
 ## Bot Commads Details
 #### Info about available commands for the bot
+#### Tidal Authentication is done in the settings panel. Use /settings command
 #### Copy paste these commands in BotFather
 #### If you want to change the default commands go to [__init.py\_\_ Line 27](https://github.com/vinayak-7-0-3/Tidal-DL-Telegram/blob/90a176565bdf3002768c5be2840c7b81eb969cfb/bot/__init__.py#L27)
 
