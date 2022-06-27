@@ -262,7 +262,6 @@ class MusicDB(DataBaseHandle):
         sql = "SELECT * FROM music_table WHERE title=%s"
 
         cur = self.scur()
-
         cur.execute(sql, (title,))
         if cur.rowcount > 0:
             row = cur.fetchone()

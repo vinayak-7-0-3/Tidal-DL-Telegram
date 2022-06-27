@@ -141,7 +141,8 @@ def downloadAlbumInfo(album, tracks):
             infos += "%s\n" % item.title
     aigpy.file.write(path, infos, "w+")
 
-async def downloadTrack(track: Track, album=None, playlist=None, userProgress=None, partSize=1048576, bot=None, msg=None, c_id=None, r_id=None):
+async def downloadTrack(track: Track, album=None, playlist=None, userProgress=None, partSize=1048576, \
+    bot=None, msg=None, c_id=None, r_id=None):
     try:
         if Config.SEARCH_CHANNEL:
             await check_duplicate(track.title, bot, c_id, r_id)
@@ -178,7 +179,6 @@ async def downloadTrack(track: Track, album=None, playlist=None, userProgress=No
             lyrics = ''
 
         __setMetaData__(track, album, path, contributors, lyrics)
-
         thumb_path = Config.DOWNLOAD_BASE_DIR + f"/thumb/{r_id}.jpg"
         media_file = await bot.send_audio(
             chat_id=c_id,

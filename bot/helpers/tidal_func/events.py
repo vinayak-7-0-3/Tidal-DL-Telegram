@@ -138,8 +138,10 @@ async def start(string, bot, msg, c_id, r_id):
             LOGGER.warning(str(e))
 
 async def start_type(etype: Type, obj, bot, msg, c_id, r_id):
-    if Config.SEARCH_CHANNEL:
-        await check_duplicate(obj.title, bot, c_id, r_id, etype)
+    if etype not in [Type.Mix, Type.Playlist, Type.Artist] and Config.SEARCH_CHANNEL:
+        check = await check_duplicate(obj.title, bot, c_id, r_id, etype)
+        if check:
+            return
     if etype == Type.Album:
         await start_album(obj, bot, msg, c_id, r_id)
     elif etype == Type.Track:
@@ -155,9 +157,8 @@ async def start_mix(obj: Mix, bot, msg, c_id, r_id):
     for index, item in enumerate(obj.tracks):
         album = TIDAL_API.getAlbum(item.album.id)
         item.trackNumberOnPlaylist = index + 1
-        if SETTINGS.saveCovers and not SETTINGS.usePlaylistFolder:
-            await downloadCover(album, bot, c_id, r_id)
-        await downloadTrack(item, album)
+        await downloadCover(album, bot, c_id, r_id, False)
+        await downloadTrack(item, album, bot=bot, msg=msg, c_id=c_id, r_id=r_id)
 
 async def start_playlist(obj: Playlist, bot, msg, c_id, r_id):
     tracks, videos = TIDAL_API.getItems(obj.uuid, Type.Playlist)
@@ -165,9 +166,8 @@ async def start_playlist(obj: Playlist, bot, msg, c_id, r_id):
     for index, item in enumerate(tracks):
         album = TIDAL_API.getAlbum(item.album.id)
         item.trackNumberOnPlaylist = index + 1
-        if SETTINGS.saveCovers and not SETTINGS.usePlaylistFolder:
-            await downloadCover(album, bot, c_id, r_id)
-        await downloadTrack(item, album, obj, bot, msg, c_id, r_id)
+        await downloadCover(album, bot, c_id, r_id, False)
+        await downloadTrack(item, album, obj, bot=bot, msg=msg, c_id=c_id, r_id=r_id)
 
 async def start_artist(obj: Artist, bot, msg, c_id, r_id):
     albums = TIDAL_API.getArtistAlbums(obj.id, SETTINGS.includeEP)
@@ -181,7 +181,6 @@ async def start_track(obj: Track, bot, msg, c_id, r_id):
 
 async def start_album(obj: Album, bot, msg, c_id, r_id):
     tracks, videos = TIDAL_API.getItems(obj.id, Type.Album)
-    if SETTINGS.saveCovers:
-        await downloadCover(obj, bot, c_id, r_id)
+    await downloadCover(obj, bot, c_id, r_id)
     for item in tracks:
-        await downloadTrack(item, obj, bot, msg, c_id, r_id)
+        await downloadTrack(item, obj, bot=bot, msg=msg, c_id=c_id, r_id=r_id)

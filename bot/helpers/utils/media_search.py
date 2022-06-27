@@ -36,14 +36,13 @@ async def index_audio_files(chat_id):
                 music_db.set_music(message.id, message.audio.title)
 
 async def check_post_tg(title):
-    print(title)
     async for message in USER.search_messages(chat_id=Config.SEARCH_CHANNEL, limit=50, query=title):
         if message.id:
             return message.link
 
 async def check_duplicate(title, bot, c_id, r_id, etype=None):
     try:
-        if etype in [Type.Album, Type.Playlist, Type.Mix]:
+        if etype == Type.Album:
             msg_link = await check_post_tg(title)
         else:
             msg_link = await check_file_exist_db(title, True)
@@ -59,6 +58,6 @@ async def check_duplicate(title, bot, c_id, r_id, etype=None):
                 reply_markup=InlineKeyboardMarkup(inline_keyboard)
             )
             LOGGER.info(title + " already exist")
-            return
+            return True
     except Exception as e:
         LOGGER.warning(e)
