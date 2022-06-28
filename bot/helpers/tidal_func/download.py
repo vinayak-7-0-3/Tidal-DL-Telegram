@@ -14,6 +14,7 @@ import aigpy
 from bot import LOGGER
 from config import Config
 from bot.helpers.translations import lang
+from bot.helpers.database.postgres_impl import music_db
 from bot.helpers.utils.media_search import check_duplicate
 
 from bot.helpers.tidal_func.paths import *
@@ -143,7 +144,9 @@ async def downloadTrack(track: Track, album=None, playlist=None, userProgress=No
     bot=None, msg=None, c_id=None, r_id=None):
     try:
         if Config.SEARCH_CHANNEL or Config.LOG_CHANNEL_ID:
-            await check_duplicate(track.title, bot, c_id, r_id)
+            check = await check_duplicate(track.title, bot, c_id, r_id)
+            if check:
+                return
         stream = TIDAL_API.getStreamUrl(track.id, SETTINGS.audioQuality)
         path = getTrackPath(track, stream, album, playlist)
 
@@ -190,9 +193,10 @@ async def downloadTrack(track: Track, album=None, playlist=None, userProgress=No
             reply_to_message_id=r_id
         )
         if Config.ALLOW_DUMP=="True":
-            await media_file.copy(
+            copy = await media_file.copy(
                 chat_id=Config.LOG_CHANNEL_ID,
             )
+            music_db.set_music(copy.id, track.title)
 
         # Remove the files after uploading
         os.remove(thumb)

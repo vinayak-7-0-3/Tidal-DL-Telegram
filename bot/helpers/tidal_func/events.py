@@ -138,7 +138,7 @@ async def start(string, bot, msg, c_id, r_id):
             LOGGER.warning(str(e))
 
 async def start_type(etype: Type, obj, bot, msg, c_id, r_id):
-    if etype not in [Type.Mix, Type.Playlist, Type.Artist] and Config.SEARCH_CHANNEL:
+    if etype == Type.Album and Config.SEARCH_CHANNEL:
         check = await check_duplicate(obj.title, bot, c_id, r_id, etype)
         if check:
             return

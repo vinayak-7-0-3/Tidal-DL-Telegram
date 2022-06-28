@@ -140,13 +140,3 @@ async def index_files(bot, update):
                 text=lang.ERR_VARS,
                 reply_to_message_id=update.id
             )
-
-@Client.on_message(filters.media)
-async def add_audio_to_db(bot, update):
-    if update.audio:
-        if update.chat.id == Config.SEARCH_CHANNEL and Config.USER_SESSION:
-            if not await check_file_exist_db(bot, update.audio.title):
-                music_db.set_music(update.id, update.audio.title)
-                LOGGER.info(f"{update.audio.title} added to Database")
-
-

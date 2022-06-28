@@ -1,4 +1,4 @@
-from pyrogram import Client, enums
+from pyrogram import enums
 from bot import Config, USER, LOGGER
 from bot.helpers.translations import lang
 from bot.helpers.tidal_func.enums import Type
