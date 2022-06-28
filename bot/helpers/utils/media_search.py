@@ -1,4 +1,4 @@
-from pyrogram import enums
+from pyrogram import Client, enums
 from bot import Config, USER, LOGGER
 from bot.helpers.translations import lang
 from bot.helpers.tidal_func.enums import Type
@@ -19,11 +19,11 @@ async def search_media_audio(query):
             link.append(message.link)
     return title, artist, link
 
-async def check_file_exist_db(title, out=False):
+async def check_file_exist_db(bot, title, out=False):
     result = music_db.get_music_id(title)
     if result:
         if out:
-            msg = await USER.get_messages(chat_id=Config.SEARCH_CHANNEL, message_ids=result)
+            msg = await bot.get_messages(chat_id=Config.SEARCH_CHANNEL, message_ids=result)
             return msg.link
         return True
     else:
@@ -45,7 +45,7 @@ async def check_duplicate(title, bot, c_id, r_id, etype=None):
         if etype == Type.Album:
             msg_link = await check_post_tg(title)
         else:
-            msg_link = await check_file_exist_db(title, True)
+            msg_link = await check_file_exist_db(bot, title, True)
         if msg_link:
             inline_keyboard = []
             inline_keyboard.append([InlineKeyboardButton(text=lang.GET_FILE, url=msg_link)])

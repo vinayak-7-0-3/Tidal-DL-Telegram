@@ -77,41 +77,39 @@ def __setMetaData__(track: Track, album: Album, filepath, contributors, lyrics):
     coverpath = TIDAL_API.getCoverUrl(album.cover, "1280", "1280")
     obj.save(coverpath)
 
-
-async def downloadCover(album, bot, c_id, r_id, post=True):
-    if album is None:
-        return
-    # POST THE ALBUM COVER DETAILS
-    if post:
-        album_art_path = Config.DOWNLOAD_BASE_DIR + f"/thumb/{r_id}-ALBUM.jpg"
-        album_art = TIDAL_API.getCoverUrl(album.cover, "1280", "1280")
-        if album_art is not None:
-            aigpy.net.downloadFile(album_art, album_art_path)
-            photo = await bot.send_photo(
-                chat_id=c_id,
-                photo=album_art_path,
-                caption=lang.ALBUM_DETAILS.format(
-                    album.title,
-                    album.artist.name,
-                    album.releaseDate,
-                    album.numberOfTracks,
-                    album.duration,
-                    album.numberOfVolumes
-                ),
-                reply_to_message_id=r_id
-            )
-            if Config.ALLOW_DUMP=="True":
-                await photo.copy(
-                    chat_id=Config.LOG_CHANNEL_ID,
-                )
-            os.remove(album_art_path)
-    # DOWNLOAD THE ALBUM COVER FOR THUMBNAIL
-    if r_id:
-        path = Config.DOWNLOAD_BASE_DIR + f"/thumb/{r_id}.jpg"
-    else:
-        path = getAlbumPath(album) + '/cover.jpg'
+async def downloadThumb(album, r_id):
+    path = Config.DOWNLOAD_BASE_DIR + f"/thumb/{r_id}.jpg"
     url = TIDAL_API.getCoverUrl(album.cover, "80", "80")
-    aigpy.net.downloadFile(url, path)
+    try:
+        aigpy.net.downloadFile(url, path)
+    except:
+        LOGGER.warning(f"Download Cover Failed For The Album : {album.title}")
+    return path
+
+async def postCover(album, bot, c_id, r_id):
+    album_art_path = Config.DOWNLOAD_BASE_DIR + f"/thumb/{r_id}-ALBUM.jpg"
+    album_art = TIDAL_API.getCoverUrl(album.cover, "1280", "1280")
+    if album_art is not None:
+        aigpy.net.downloadFile(album_art, album_art_path)
+        photo = await bot.send_photo(
+            chat_id=c_id,
+            photo=album_art_path,
+            caption=lang.ALBUM_DETAILS.format(
+                album.title,
+                album.artist.name,
+                album.releaseDate,
+                album.numberOfTracks,
+                album.duration,
+                album.numberOfVolumes
+            ),
+            reply_to_message_id=r_id
+        )
+        if Config.ALLOW_DUMP=="True":
+            await photo.copy(
+                chat_id=Config.LOG_CHANNEL_ID,
+            )
+        os.remove(album_art_path)
+
 
 
 def downloadAlbumInfo(album, tracks):
@@ -144,7 +142,7 @@ def downloadAlbumInfo(album, tracks):
 async def downloadTrack(track: Track, album=None, playlist=None, userProgress=None, partSize=1048576, \
     bot=None, msg=None, c_id=None, r_id=None):
     try:
-        if Config.SEARCH_CHANNEL:
+        if Config.SEARCH_CHANNEL or Config.LOG_CHANNEL_ID:
             await check_duplicate(track.title, bot, c_id, r_id)
         stream = TIDAL_API.getStreamUrl(track.id, SETTINGS.audioQuality)
         path = getTrackPath(track, stream, album, playlist)
@@ -179,14 +177,16 @@ async def downloadTrack(track: Track, album=None, playlist=None, userProgress=No
             lyrics = ''
 
         __setMetaData__(track, album, path, contributors, lyrics)
-        thumb_path = Config.DOWNLOAD_BASE_DIR + f"/thumb/{r_id}.jpg"
+
+        thumb = await downloadThumb(album, r_id)
+
         media_file = await bot.send_audio(
             chat_id=c_id,
             audio=path,
             duration=track.duration,
             performer=TIDAL_API.getArtistsName(album.artists),
             title=track.title,
-            thumb=thumb_path,
+            thumb=thumb,
             reply_to_message_id=r_id
         )
         if Config.ALLOW_DUMP=="True":
@@ -195,7 +195,7 @@ async def downloadTrack(track: Track, album=None, playlist=None, userProgress=No
             )
 
         # Remove the files after uploading
-        os.remove(thumb_path)
+        os.remove(thumb)
         os.remove(path)
 
         LOGGER.info("Succesfully Downloaded " + track.title)

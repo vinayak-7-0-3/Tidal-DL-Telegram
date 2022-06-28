@@ -1,6 +1,6 @@
 import asyncio
 from bot import CMD
-from config import Config
+from config import LOGGER, Config
 from pyrogram import Client, filters
 from bot.helpers.translations import lang
 from bot.helpers.buttons.help_buttons import *
@@ -147,5 +147,6 @@ async def add_audio_to_db(bot, update):
         if update.chat.id == Config.SEARCH_CHANNEL and Config.USER_SESSION:
             if not await check_file_exist_db(update.audio.title):
                 music_db.set_music(update.id, update.audio.title)
+                LOGGER.info(f"{update.audio.title} added to Database")
 
 
