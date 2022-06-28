@@ -32,7 +32,7 @@ async def check_file_exist_db(bot, title, out=False):
 async def index_audio_files(chat_id):
     async for message in USER.search_messages(chat_id=Config.SEARCH_CHANNEL, filter=enums.MessagesFilter.AUDIO):
         if message.audio:
-            if not await check_file_exist_db(message.audio.title):
+            if not await check_file_exist_db(None, message.audio.title):
                 music_db.set_music(message.id, message.audio.title)
 
 async def check_post_tg(title):
