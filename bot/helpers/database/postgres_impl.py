@@ -236,7 +236,8 @@ class MusicDB(DataBaseHandle):
 
         music_schema = """CREATE TABLE IF NOT EXISTS music_table (
             msg_id BIGINT UNIQUE,
-            title VARCHAR(2000) DEFAULT NULL
+            title VARCHAR(2000) DEFAULT NULL,
+            artist VARCHAR(2000) DEFAULT NULL
         )"""
 
         cur = self.scur()
@@ -248,13 +249,13 @@ class MusicDB(DataBaseHandle):
         self._conn.commit()
         self.ccur(cur)
 
-    def set_music(self, msg_id, title):
+    def set_music(self, msg_id, title, artist):
         #title = ''.join(filter(lambda i:i not in special_characters, title))
         sql = "SELECT * FROM music_table"
         cur = self.scur()
 
-        sql = "INSERT INTO music_table(msg_id,title) VALUES(%s,%s)"
-        cur.execute(sql, (msg_id, title))
+        sql = "INSERT INTO music_table(msg_id,title,artist) VALUES(%s,%s,%s)"
+        cur.execute(sql, (msg_id, title, artist))
 
         self.ccur(cur)
 
@@ -265,9 +266,9 @@ class MusicDB(DataBaseHandle):
         cur.execute(sql, (title,))
         if cur.rowcount > 0:
             row = cur.fetchone()
-            return row[0]
+            return row[0], row[2]
         else:
-            return None
+            return None, None
 
         self.ccur(cur)
 
