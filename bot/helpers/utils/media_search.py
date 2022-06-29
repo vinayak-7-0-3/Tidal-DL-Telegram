@@ -19,21 +19,22 @@ async def search_media_audio(query):
             link.append(message.link)
     return title, artist, link
 
-async def check_file_exist_db(bot, title, out=False):
-    result = music_db.get_music_id(title)
-    if result:
-        if out:
-            msg = await bot.get_messages(chat_id=Config.SEARCH_CHANNEL, message_ids=result)
-            return msg.link
-        return True
+async def check_file_exist_db(bot, title, artist, out=False):
+    r_id, r_artist = music_db.get_music_id(title, artist)
+    if r_id:
+        if artist == r_artist:
+            if out:
+                msg = await bot.get_messages(chat_id=Config.SEARCH_CHANNEL, message_ids=r_id)
+                return msg.link
+            return True
     else:
         return False
 
 async def index_audio_files(chat_id):
     async for message in USER.search_messages(chat_id=Config.SEARCH_CHANNEL, filter=enums.MessagesFilter.AUDIO):
         if message.audio:
-            if not await check_file_exist_db(None, message.audio.title):
-                music_db.set_music(message.id, message.audio.title)
+            if not await check_file_exist_db(None, message.audio.title, message.audio.performer):
+                music_db.set_music(message.id, message.audio.title, message.audio.performer)
 
 async def check_post_tg(title):
     if Config.USER_SESSION is not None and Config.USER_SESSION != "":
@@ -44,12 +45,12 @@ async def check_post_tg(title):
         LOGGER.info("No User Session Provided. Skipping Duplicate Check...")
         return False
 
-async def check_duplicate(title, bot, c_id, r_id, etype=None):
+async def check_duplicate(title, artist, bot, c_id, r_id, etype=None):
     try:
         if etype == Type.Album:
             msg_link = await check_post_tg(title)
         else:
-            msg_link = await check_file_exist_db(bot, title, True)
+            msg_link = await check_file_exist_db(bot, title, artist, True)
         if msg_link:
             inline_keyboard = []
             inline_keyboard.append([InlineKeyboardButton(text=lang.GET_FILE, url=msg_link)])

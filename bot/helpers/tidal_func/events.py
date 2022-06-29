@@ -139,7 +139,7 @@ async def start(string, bot, msg, c_id, r_id):
 
 async def start_type(etype: Type, obj, bot, msg, c_id, r_id):
     if etype == Type.Album and Config.SEARCH_CHANNEL:
-        check = await check_duplicate(obj.title, bot, c_id, r_id, etype)
+        check = await check_duplicate(obj.title, obj.artist.name, bot, c_id, r_id, etype)
         if check:
             return
     if etype == Type.Album:
