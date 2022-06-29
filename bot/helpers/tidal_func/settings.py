@@ -111,9 +111,12 @@ class TokenSettings(aigpy.model.ModelBase):
         txt = aigpy.file.getContent(self._path_)
         if txt == "" or txt is None:
             _, txt = set_db.get_variable("AUTH_TOKEN")
-        if len(txt) > 0:
-            data = json.loads(self.__decode__(txt))
-            aigpy.model.dictToModel(data, self)
+        try:
+            if len(txt) > 0:
+                data = json.loads(self.__decode__(txt))
+                aigpy.model.dictToModel(data, self)
+        except TypeError:
+            set_db.set_variable("AUTH_DONE", False, False, None)
 
     def save(self):
         data = aigpy.model.modelToDict(self)
