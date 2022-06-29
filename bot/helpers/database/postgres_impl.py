@@ -259,14 +259,16 @@ class MusicDB(DataBaseHandle):
 
         self.ccur(cur)
 
-    def get_music_id(self, title):
+    def get_music_id(self, title, artist):
         sql = "SELECT * FROM music_table WHERE title=%s"
 
         cur = self.scur()
         cur.execute(sql, (title,))
         if cur.rowcount > 0:
-            row = cur.fetchone()
-            return row[0], row[2]
+            row = cur.fetchall()
+            for item in row:
+                if item[2] == artist:
+                    return item[0], item[2]
         else:
             return None, None
 

@@ -20,7 +20,7 @@ async def search_media_audio(query):
     return title, artist, link
 
 async def check_file_exist_db(bot, title, artist, out=False):
-    r_id, r_artist = music_db.get_music_id(title)
+    r_id, r_artist = music_db.get_music_id(title, artist)
     if r_id:
         if artist == r_artist:
             if out:
