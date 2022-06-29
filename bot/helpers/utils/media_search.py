@@ -20,12 +20,11 @@ async def search_media_audio(query):
     return title, artist, link
 
 async def check_file_exist_db(bot, title, artist, out=False):
-    r_title, r_artist = music_db.get_music_id(title)
-    if r_title:
+    r_id, r_artist = music_db.get_music_id(title)
+    if r_id:
         if artist == r_artist:
-            print("Both title and artist are same")
             if out:
-                msg = await bot.get_messages(chat_id=Config.SEARCH_CHANNEL, message_ids=result)
+                msg = await bot.get_messages(chat_id=Config.SEARCH_CHANNEL, message_ids=r_id)
                 return msg.link
             return True
     else:

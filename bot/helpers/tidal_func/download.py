@@ -144,7 +144,7 @@ async def downloadTrack(track: Track, album=None, playlist=None, userProgress=No
     bot=None, msg=None, c_id=None, r_id=None):
     try:
         if Config.SEARCH_CHANNEL or Config.LOG_CHANNEL_ID:
-            check = await check_duplicate(track.title, track.artist, bot, c_id, r_id)
+            check = await check_duplicate(track.title, track.artist.name, bot, c_id, r_id)
             if check:
                 return
         stream = TIDAL_API.getStreamUrl(track.id, SETTINGS.audioQuality)
@@ -196,7 +196,7 @@ async def downloadTrack(track: Track, album=None, playlist=None, userProgress=No
             copy = await media_file.copy(
                 chat_id=Config.LOG_CHANNEL_ID,
             )
-            music_db.set_music(copy.id, track.title)
+            music_db.set_music(copy.id, track.title, track.artist.name)
 
         # Remove the files after uploading
         os.remove(thumb)
