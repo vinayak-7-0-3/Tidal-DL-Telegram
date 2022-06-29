@@ -111,7 +111,7 @@ class TokenSettings(aigpy.model.ModelBase):
         txt = aigpy.file.getContent(self._path_)
         if txt == "" or txt is None:
             _, txt = set_db.get_variable("AUTH_TOKEN")
-        try
+        try:
             if len(txt) > 0:
                 data = json.loads(self.__decode__(txt))
                 aigpy.model.dictToModel(data, self)
