@@ -1,14 +1,13 @@
 import asyncio
 from bot import CMD
-from config import LOGGER, Config
+from config import Config
 from pyrogram import Client, filters
 from bot.helpers.translations import lang
 from bot.helpers.buttons.help_buttons import *
 from bot.helpers.utils.auth_check import get_chats
 from bot.helpers.utils.auth_check import check_id, get_chats
 from bot.helpers.utils.media_search import index_audio_files
-from bot.helpers.utils.media_search import check_file_exist_db
-from bot.helpers.database.postgres_impl import users_db, admins_db, chats_db, music_db
+from bot.helpers.database.postgres_impl import users_db, admins_db, chats_db
 
 @Client.on_message(filters.command(CMD.START))
 async def start(bot, update):
@@ -121,7 +120,7 @@ async def add_admin(bot, update):
 @Client.on_message(filters.command(CMD.INDEX))
 async def index_files(bot, update):
     if check_id(update.from_user.id, restricted=True):
-        if Config.SEARCH_CHANNEL and Config.USER_SESSION:
+        if Config.SEARCH_CHANNEL and Config.USER_SESSION not in ["", None]:
             init = await bot.send_message(
                 chat_id=update.chat.id,
                 text=lang.INIT_INDEX,

@@ -48,7 +48,7 @@ async def inline_search_tidal(_, event: InlineQuery):
             query = query[3:]
             msg, title, artist, url, thumb = await search_album(query)
         elif query.startswith("-d ") and Config.SEARCH_CHANNEL:
-            if Config.USER_SESSION:
+            if Config.USER_SESSION is not None and Config.USER_SESSION != "":
                 query = query[3:]
                 title, artist, links = await search_media_audio(query)
             else:

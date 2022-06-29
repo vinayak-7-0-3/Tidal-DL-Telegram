@@ -22,7 +22,7 @@ class Config(object):
         LOGGER.warning("Essential TG Configs are missing")
         exit(1)
 
-    USER_SESSION = getenv("USER_SESSION", None)
+    USER_SESSION = getenv("USER_SESSION", "")
 
     try:
         AUTH_CHAT = set(int(x) for x in getenv("AUTH_CHAT").split())
@@ -37,13 +37,16 @@ class Config(object):
     try:
         LOG_CHANNEL_ID = int(getenv("LOG_CHANNEL_ID"))
     except:
-        LOG_CHANNEL_ID = -69
+        LOG_CHANNEL_ID = None
     ALLOW_DUMP = getenv("ALLOW_DUMP", False)
 
     try:
         SEARCH_CHANNEL = int(getenv("SEARCH_CHANNEL"))
     except:
-        SEARCH_CHANNEL = LOG_CHANNEL_ID
+        if LOG_CHANNEL_ID:
+            SEARCH_CHANNEL = LOG_CHANNEL_ID
+        else:
+            SEARCH_CHANNEL = None
     
     IS_BOT_PUBLIC = getenv("IS_BOT_PUBLIC", True)
 

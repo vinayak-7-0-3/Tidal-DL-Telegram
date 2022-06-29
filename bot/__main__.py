@@ -24,7 +24,7 @@ class Bot(Client):
         LOGGER.info('Loading Tidal DL Configs........')
         SETTINGS.read("./.tidal-dl.json")
         TOKEN.read("./tidal-dl.token.json")
-        if Config.USER_SESSION is not None:
+        if Config.USER_SESSION is not None and Config.USER_SESSION != "":
             await USER.start()
         LOGGER.info("Bot Started...... Now Enjoy")
         await get_chats()

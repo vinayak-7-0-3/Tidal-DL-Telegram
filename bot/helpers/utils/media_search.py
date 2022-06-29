@@ -36,9 +36,13 @@ async def index_audio_files(chat_id):
                 music_db.set_music(message.id, message.audio.title)
 
 async def check_post_tg(title):
-    async for message in USER.search_messages(chat_id=Config.SEARCH_CHANNEL, limit=50, query=title):
-        if message.id:
-            return message.link
+    if Config.USER_SESSION is not None and Config.USER_SESSION != "":
+        async for message in USER.search_messages(chat_id=Config.SEARCH_CHANNEL, limit=50, query=title):
+            if message.id:
+                return message.link
+    else:
+        LOGGER.info("No User Session Provided. Skipping Duplicate Check...")
+        return False
 
 async def check_duplicate(title, bot, c_id, r_id, etype=None):
     try:
