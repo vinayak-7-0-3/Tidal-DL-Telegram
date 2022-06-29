@@ -28,7 +28,7 @@
     "USER_SESSION": {
       "description": "User string session for searching files",
       "value": "",
-      "required": true
+      "required": false
     },
     "AUTH_CHAT": {
       "description": "Chats where the bot will work",
@@ -53,7 +53,7 @@
     "SEARCH_CHANNEL": {
       "description": "Channel/group ID to search already downloaded songs",
       "value": "",
-      "required": true
+      "required": false
     },
     "IS_BOT_PUBLIC": {
       "description": "Want to allow public access to bot ? (True/False)",
@@ -85,15 +85,15 @@
       "value": "",
       "required": true
     },
-    "OWNER_USERNAME": {
-      "description": "Username of the owner of the bot (use with or without @)",
-      "value": "",
-      "required": true
-    },
     "ENV": {
       "description": "Ignore this XD",
       "value": "YEMS YEMS",
       "required": true
+    },
+    "MUSIC_CHANNEL_LINK": {
+      "description": "Link to your music channel",
+      "value": "",
+      "required": false
     }
   },
   "formation": {
