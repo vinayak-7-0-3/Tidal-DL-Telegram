@@ -33,7 +33,6 @@ async def help_msg(bot, update):
         chat_id=update.chat.id,
         text=lang.HELP_MSG.format(
             update.from_user.first_name,
-            CMD.CMD_LIST[0]
         ),
         reply_to_message_id=update.id,
         disable_web_page_preview=True,
@@ -48,7 +47,6 @@ async def cmd_list(bot, update):
         text=lang.CMD_LIST.format(
             update.from_user.first_name,
             CMD.HELP[0],
-            CMD.CMD_LIST[0],
             CMD.DOWNLOAD[0],
             CMD.AUTH[0],
             CMD.SHELL[0],
