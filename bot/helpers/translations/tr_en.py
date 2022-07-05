@@ -104,6 +104,9 @@ Flags are :
     AUTH_SUCCESFULL_MSG = "Authentication successful.\n\nIt is now valid for {}"
     WARN_REMOVE_AUTH = "<b>You are about to remove authentication.</b>\n\nPress again to confirm."
     AUTH_NEXT_STEP = "Go to {} within the next {} to complete setup."
+    REMOVED_AUTH_TIDAL = "Removed Tidal Login Successfully"
+    CHANGE_QUALITY = "<b>Click to set the quality\n\nCurrent Quality :</b> <code>{}</code>"
+    WRONG_USER_CLICK = "You are not allowed to click this button."
 #
 #
 # INDEXING
@@ -126,6 +129,18 @@ Flags are :
     ADD_TIDAL_AUTH = "Add Auth"
     MAIN_MENU = "MAIN MENU"
     COMMANDS = "COMMANDS"
+    BOT_LANGUAGE = "BOT LANGUAGE"
+    TIDAL_QUALITY = "TIDAL QUALITY - {}"
+    TIDAL_QUALITY_HIFI = "HIFI"
+    TIDAL_QUALITY_HIGH = "HIGH"
+    TIDAL_QUALITY_MASTER = "MASTER"
+    TIDAL_QUALITY_NORMAL = "NORMAL"
+    # INLINE BUTTONS
+    SEARCH_AGAIN = "Search Again"
+    MUSIC_C_JOIN = "Join Music Storage"
+    LINK = "Link"
+    SEARCH = "Search"
+
 #
 #
 # ERRORS

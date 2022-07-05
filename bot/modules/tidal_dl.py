@@ -22,18 +22,18 @@ async def download_tidal(bot, update):
             LOGGER.info(f"Download Initiated By - {update.from_user.first_name}")
             msg = await bot.send_message(
                 chat_id=update.chat.id,
-                text=lang.INIT_DOWNLOAD,
+                text=lang.select.INIT_DOWNLOAD,
                 reply_to_message_id=update.id
             )
             botmsg_id = msg.id
             auth, err = await checkLogin()
             if auth:
-                await start(link, bot, update, update.chat.id, reply_to_id)
+                await start(link, bot, update, update.chat.id, reply_to_id, update.from_user.id)
             else:
                 await bot.edit_message_text(
                     chat_id=update.chat.id,
                     message_id=botmsg_id,
-                    text=lang.ERR_AUTH_CHECK.format(err),
+                    text=lang.select.ERR_AUTH_CHECK.format(err),
                 )
                 return
         
@@ -44,6 +44,6 @@ async def download_tidal(bot, update):
         else:
             await bot.send_message(
                 chat_id=update.chat.id,
-                text=lang.ERR_NO_LINK,
+                text=lang.select.ERR_NO_LINK,
                 reply_to_message_id=update.id
             )

@@ -76,6 +76,7 @@ class Config(object):
         exit(1)
 
     MUSIC_CHANNEL_LINK = getenv("MUSIC_CHANNEL_LINK", "")
+    BOT_LANGUAGE = getenv("BOT_LANGUAGE", "en")
 
     if BOT_USERNAME.startswith("@"):
         BOT_USERNAME = BOT_USERNAME[1:]

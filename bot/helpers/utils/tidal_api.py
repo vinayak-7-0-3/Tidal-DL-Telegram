@@ -1,4 +1,3 @@
-import re
 import aiohttp
 from bot import Config, LOGGER
 from bot.helpers.translations import lang
@@ -46,7 +45,7 @@ async def search_track(query):
         else:
             thumb.append(None)
 
-        text = lang.INPUT_MESSAGE_TRACK.format(
+        text = lang.select.INPUT_MESSAGE_TRACK.format(
             result['title'],
             result['artists'][0]['name'],
             result['album']['title'],
@@ -95,7 +94,7 @@ async def search_album(query):
         else:
             thumb.append(None)
 
-        text = lang.INPUT_MESSAGE_ALBUM.format(
+        text = lang.select.INPUT_MESSAGE_ALBUM.format(
             result['title'],
             result['artists'][0]['name'],
             result['numberOfTracks'],

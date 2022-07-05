@@ -53,9 +53,9 @@ async def check_duplicate(title, artist, bot, c_id, r_id, etype=None):
             msg_link = await check_file_exist_db(bot, title, artist, True)
         if msg_link:
             inline_keyboard = []
-            inline_keyboard.append([InlineKeyboardButton(text=lang.GET_FILE, url=msg_link)])
+            inline_keyboard.append([InlineKeyboardButton(text=lang.select.GET_FILE, url=msg_link)])
             if not Config.MUSIC_CHANNEL_LINK == "":
-                inline_keyboard.append([InlineKeyboardButton(text=lang.JOIN_MUSIC_STORAGE, url=Config.MUSIC_CHANNEL_LINK)])
+                inline_keyboard.append([InlineKeyboardButton(text=lang.select.JOIN_MUSIC_STORAGE, url=Config.MUSIC_CHANNEL_LINK)])
             await bot.send_message(
                 chat_id=c_id,
                 text=lang.FILE_EXIST.format(title),

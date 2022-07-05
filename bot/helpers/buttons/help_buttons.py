@@ -5,11 +5,11 @@ def cmds_button():
     inline_keyboard = [
         [
             InlineKeyboardButton(
-                text=lang.COMMANDS,
+                text=lang.select.COMMANDS,
                 callback_data="cmdscb"
             ),
             InlineKeyboardButton(
-                text=lang.CLOSE,
+                text=lang.select.CLOSE,
                 callback_data="close"
             )
         ]

@@ -22,16 +22,16 @@ async def inline_search_tidal(_, event: InlineQuery):
     if event.query == "" or not event.query.startswith(("-a", "-s", "-d")):
         answers.append(
             InlineQueryResultArticle(
-                title=lang.INLINE_PLACEHOLDER,
+                title=lang.select.INLINE_PLACEHOLDER,
                 input_message_content=InputTextMessageContent(
-                    message_text=lang.INLINE_SEARCH_HELP
+                    message_text=lang.select.INLINE_SEARCH_HELP
                 ),
                 thumb_url=Config.INLINE_THUMB,
                 reply_markup=InlineKeyboardMarkup(
                     [
                         [
                             InlineKeyboardButton(
-                                text="Search",
+                                text=lang.select.SEARCH,
                                 switch_inline_query_current_chat=""
                             )
                         ]
@@ -73,13 +73,13 @@ async def inline_search_tidal(_, event: InlineQuery):
                             [
                                 [
                                     InlineKeyboardButton(
-                                        text="Link",
+                                        text=lang.select.LINK,
                                         url=url[title.index(name)]
                                     )
                                 ],
                                 [
                                     InlineKeyboardButton(
-                                        text="Search Again",
+                                        text=lang.select.SEARCH_AGAIN,
                                         switch_inline_query_current_chat=""
                                     )
                                 ]
@@ -95,7 +95,7 @@ async def inline_search_tidal(_, event: InlineQuery):
                         title=name,
                         description=artist[title.index(name)],
                         input_message_content=InputTextMessageContent(
-                            message_text=lang.INLINE_MEDIA_SEARCH.format(
+                            message_text=lang.select.INLINE_MEDIA_SEARCH.format(
                                 name,
                                 artist[title.index(name)]
                             ),
@@ -106,19 +106,19 @@ async def inline_search_tidal(_, event: InlineQuery):
                             [
                                 [
                                     InlineKeyboardButton(
-                                        text="Search Again",
+                                        text=lang.select.SEARCH_AGAIN,
                                         switch_inline_query_current_chat=""
                                     )
                                 ],
                                 [
                                     InlineKeyboardButton(
-                                        text="File Here",
+                                        text=lang.select.GET_FILE,
                                         url=links[title.index(name)]
                                     )
                                 ],
                                 [
                                     InlineKeyboardButton(
-                                        text="Join Music Storage",
+                                        text=lang.select.MUSIC_C_JOIN,
                                         url=Config.MUSIC_CHANNEL_LINK
                                     )
                                 ]
@@ -129,16 +129,16 @@ async def inline_search_tidal(_, event: InlineQuery):
         else:
             answers.append(
                 InlineQueryResultArticle(
-                    title=lang.INLINE_NO_RESULT,
+                    title=lang.select.INLINE_NO_RESULT,
                     input_message_content=InputTextMessageContent(
-                        message_text=lang.INLINE_NO_RESULT
+                        message_text=lang.select.INLINE_NO_RESULT
                     ),
                     thumb_url=Config.INLINE_THUMB,
                     reply_markup=InlineKeyboardMarkup(
                         [
                             [
                                 InlineKeyboardButton(
-                                    text="Search Again",
+                                    text=lang.select.SEARCH_AGAIN,
                                     switch_inline_query_current_chat=""
                                 )
                             ]

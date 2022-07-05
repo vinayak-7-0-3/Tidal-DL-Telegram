@@ -13,7 +13,7 @@ from bot.helpers.database.postgres_impl import users_db, admins_db, chats_db
 async def start(bot, update):
     msg = await bot.send_message(
         chat_id=update.chat.id,
-        text=lang.INIT_MSG.format(
+        text=lang.select.INIT_MSG.format(
             update.from_user.first_name
         ),
         reply_to_message_id=update.id
@@ -22,7 +22,7 @@ async def start(bot, update):
     await bot.edit_message_text(
         chat_id=update.chat.id,
         message_id=msg.id,
-        text=lang.START_TEXT.format(
+        text=lang.select.START_TEXT.format(
             update.from_user.first_name
         )
     )
@@ -31,7 +31,7 @@ async def start(bot, update):
 async def help_msg(bot, update):
     await bot.send_message(
         chat_id=update.chat.id,
-        text=lang.HELP_MSG.format(
+        text=lang.select.HELP_MSG.format(
             update.from_user.first_name,
         ),
         reply_to_message_id=update.id,
@@ -44,7 +44,7 @@ async def cmd_list(bot, update):
     await bot.edit_message_text(
         chat_id=update.message.chat.id,
         message_id=update.message.id,
-        text=lang.CMD_LIST.format(
+        text=lang.select.CMD_LIST.format(
             update.from_user.first_name,
             CMD.HELP[0],
             CMD.DOWNLOAD[0],
@@ -75,7 +75,7 @@ async def auth_chat(bot, update):
 
         await bot.send_message(
             chat_id=update.chat.id,
-            text=lang.CHAT_AUTH.format(
+            text=lang.select.CHAT_AUTH.format(
                 chat_id
             ),
             reply_to_message_id=update.id
@@ -100,7 +100,7 @@ async def add_admin(bot, update):
         else:
             await bot.send_message(
                 chat_id=update.chat.id,
-                text=lang.NO_ID_PROVIDED,
+                text=lang.select.NO_ID_PROVIDED,
                 reply_to_message_id=update.id
             )
             return
@@ -109,7 +109,7 @@ async def add_admin(bot, update):
 
         await bot.send_message(
             chat_id=update.chat.id,
-            text=lang.ADD_ADMIN.format(
+            text=lang.select.ADD_ADMIN.format(
                 admin_id
             ),
             reply_to_message_id=update.id
@@ -121,7 +121,7 @@ async def index_files(bot, update):
         if Config.SEARCH_CHANNEL and Config.USER_SESSION not in ["", None]:
             init = await bot.send_message(
                 chat_id=update.chat.id,
-                text=lang.INIT_INDEX,
+                text=lang.select.INIT_INDEX,
                 reply_to_message_id=update.id
             )
             await index_audio_files(Config.SEARCH_CHANNEL)
@@ -129,11 +129,11 @@ async def index_files(bot, update):
             await bot.edit_message_text(
                 chat_id=update.chat.id,
                 message_id=init.id,
-                text=lang.INDEX_DONE
+                text=lang.select.INDEX_DONE
             )
         else:
             await bot.send_message(
                 chat_id=update.chat.id,
-                text=lang.ERR_VARS,
+                text=lang.select.ERR_VARS,
                 reply_to_message_id=update.id
             )

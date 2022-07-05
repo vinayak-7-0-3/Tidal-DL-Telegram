@@ -14,8 +14,8 @@ import aigpy
 from bot import LOGGER
 from config import Config
 from bot.helpers.translations import lang
-from bot.helpers.database.postgres_impl import music_db
 from bot.helpers.utils.media_search import check_duplicate
+from bot.helpers.database.postgres_impl import music_db, user_settings
 
 from bot.helpers.tidal_func.paths import *
 from bot.helpers.tidal_func.tidal import *
@@ -95,7 +95,7 @@ async def postCover(album, bot, c_id, r_id):
         photo = await bot.send_photo(
             chat_id=c_id,
             photo=album_art_path,
-            caption=lang.ALBUM_DETAILS.format(
+            caption=lang.select.ALBUM_DETAILS.format(
                 album.title,
                 album.artist.name,
                 album.releaseDate,
@@ -141,13 +141,19 @@ def downloadAlbumInfo(album, tracks):
     aigpy.file.write(path, infos, "w+")
 
 async def downloadTrack(track: Track, album=None, playlist=None, userProgress=None, partSize=1048576, \
-    bot=None, msg=None, c_id=None, r_id=None):
+    bot=None, msg=None, c_id=None, r_id=None, u_id=None):
     try:
         if Config.SEARCH_CHANNEL or Config.LOG_CHANNEL_ID:
             check = await check_duplicate(track.title, track.artist.name, bot, c_id, r_id)
             if check:
                 return
-        stream = TIDAL_API.getStreamUrl(track.id, SETTINGS.audioQuality)
+        quality = user_settings.get_var(u_id, "QUALITY")
+        if quality:
+            quality = SETTINGS.getAudioQuality(quality)
+        else:
+            quality = SETTINGS.audioQuality
+
+        stream = TIDAL_API.getStreamUrl(track.id, quality)
         path = getTrackPath(track, stream, album, playlist)
 
         # download

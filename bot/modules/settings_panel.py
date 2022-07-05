@@ -4,19 +4,27 @@ from bot.helpers.translations import lang
 from bot.helpers.utils.auth_check import check_id
 from bot.helpers.utils.auth_check import get_chats
 from bot.helpers.buttons.settings_buttons import *
-from bot.helpers.database.postgres_impl import TidalSettings
+from bot.helpers.tidal_func.settings import SETTINGS
+from bot.helpers.database.postgres_impl import set_db, user_settings
 
 from bot.helpers.tidal_func.events import checkLogin, loginByWeb
-
-set_db = TidalSettings()
 
 @Client.on_message(filters.command(CMD.SETTINGS))
 async def settings(bot, update):
     if check_id(update.from_user.id, restricted=True):
         await bot.send_message(
             chat_id=update.chat.id,
-            text=lang.INIT_SETTINGS_MENU,
+            text=lang.select.INIT_SETTINGS_MENU,
             reply_markup=main_menu_set()
+        )
+    else:
+        quality = user_settings.get_var(update.from_user.id, "QUALITY")
+        if not quality:
+            quality = str(SETTINGS.audioQuality).replace("AudioQuality.", "")
+        await bot.send_message(
+            chat_id=update.chat.id,
+            text=lang.select.INIT_SETTINGS_MENU,
+            reply_markup=user_set_buttons(quality, update.from_user.id)
         )
 
 @Client.on_callback_query(filters.regex(pattern=r"^tg_panel"))
@@ -37,7 +45,7 @@ async def tidal_panel_cb(bot, update):
     await bot.edit_message_text(
         chat_id=update.message.chat.id,
         message_id=update.message.id,
-        text=lang.TIDAL_AUTH_PANEL.format(msg),
+        text=lang.select.TIDAL_AUTH_PANEL.format(msg),
         reply_markup=tidal_auth_set()
     )
 
@@ -47,7 +55,7 @@ async def tiset_warn_auth_cb(bot, update):
         await bot.edit_message_text(
             chat_id=update.message.chat.id,
             message_id=update.message.id,
-            text=lang.WARN_REMOVE_AUTH,
+            text=lang.select.WARN_REMOVE_AUTH,
             reply_markup=tidal_auth_set(True)
         )
 
@@ -60,7 +68,7 @@ async def tiset_remove_auth_cb(bot, update):
             await bot.edit_message_text(
                 chat_id=update.message.chat.id,
                 message_id=update.message.id,
-                text="Removed Tidal Login Successfully",
+                text=lang.select.REMOVED_AUTH_TIDAL,
                 reply_markup=tidal_auth_set()
             )
         except:
@@ -83,6 +91,16 @@ async def close_cb(bot, update):
             )
         except:
             pass
+    try:
+        if int(update.data.split("_")[1]) == update.from_user.id:
+            await bot.delete_messages(
+                chat_id=update.message.chat.id,
+                message_ids=update.message.id
+            )
+        else:
+            await update.answer(lang.select.WRONG_USER_CLICK)
+    except:
+        pass
 
 @Client.on_callback_query(filters.regex(pattern=r"^main_menu"))
 async def main_menu_cb(bot, update):
@@ -91,8 +109,38 @@ async def main_menu_cb(bot, update):
             await bot.edit_message_text(
                 chat_id=update.message.chat.id,
                 message_id=update.message.id,
-                text=lang.INIT_SETTINGS_MENU,
+                text=lang.select.INIT_SETTINGS_MENU,
                 reply_markup=main_menu_set()
             )
         except:
             pass
+
+@Client.on_callback_query(filters.regex(pattern=r"^tidalq"))
+async def tquality_user_cb(bot, update):
+    u_id = update.data.split("_")[1]
+    quality = update.data.split("_")[2]
+    if not int(u_id) == update.from_user.id:
+        await update.answer(lang.select.WRONG_USER_CLICK)
+        return
+    await bot.edit_message_text(
+        chat_id=update.message.chat.id,
+        message_id=update.message.id,
+        text=lang.select.CHANGE_QUALITY.format(quality),
+        reply_markup=quality_set(u_id)
+    )
+
+@Client.on_callback_query(filters.regex(pattern=r"^setq"))
+async def set_tquality_cb(bot, update):
+    u_id = update.data.split("_")[2]
+    quality = update.data.split("_")[1]
+    if not int(u_id) == update.from_user.id:
+        await update.answer(lang.select.WRONG_USER_CLICK)
+        return
+    user_settings.set_var(u_id, "QUALITY", quality)
+    await bot.edit_message_text(
+        chat_id=update.message.chat.id,
+        message_id=update.message.id,
+        text=lang.select.CHANGE_QUALITY.format(quality),
+        reply_markup=user_set_buttons(quality, u_id)
+    )
+    

@@ -1,7 +1,8 @@
-from .postgres_db import DataBaseHandle
+import json
 import psycopg2
-import psycopg2.extras
 import datetime
+import psycopg2.extras
+from .postgres_db import DataBaseHandle
 
 from bot import Config
 
@@ -277,8 +278,83 @@ class MusicDB(DataBaseHandle):
     def __del__(self):
         super().__del__()
 
+class UserSettings(DataBaseHandle):
+    shared_users = {}
+
+    def __init__(self, dburl=None):
+        if dburl is None:
+            dburl = Config.DATABASE_URL
+        super().__init__(dburl)
+
+        cur = self.scur()
+
+        table = """CREATE TABLE IF NOT EXISTS user_settings (
+            user_id VARCHAR(50) NOT NULL,
+            json_data VARCHAR(1000) NOT NULL
+        )"""
+
+        try:
+            cur.execute(table)
+        except psycopg2.errors.UniqueViolation:
+            pass
+
+        self.ccur(cur)
+
+    def set_var(self, user_id, var_name, var_value):
+        user_id = str(user_id)
+        sql = "SELECT * FROM user_settings WHERE user_id=%s"
+        cur = self.scur(dictcur=True)
+
+        user = self.shared_users.get(user_id)
+        if user is not None:
+            self.shared_users[user_id][var_name] = var_value
+        else:
+            cur.execute(sql, (user_id,))
+            if cur.rowcount > 0:
+                user = cur.fetchone()
+                jdata = user.get("json_data")
+                jdata = json.loads(jdata)
+                jdata["LANGUAGE"] = var_value
+                self.shared_users[user_id] = jdata
+            else:
+                self.shared_users[user_id] = {var_name: var_value}
+
+        cur.execute(sql, (user_id,))
+        if cur.rowcount > 0:
+            insql = "UPDATE user_settings SET json_data = %s where user_id=%s"
+            cur.execute(insql, (json.dumps(self.shared_users.get(user_id)), user_id))
+
+        else:
+            insql = "INSERT INTO user_settings(user_id, json_data) VALUES(%s, %s)"
+            cur.execute(insql, (user_id, json.dumps(self.shared_users.get(user_id))))
+
+        self.ccur(cur)
+
+    def get_var(self, user_id, var_name):
+        user_id = str(user_id)
+        sql = "SELECT * FROM user_settings WHERE user_id=%s"
+        # search the cache
+        user = self.shared_users.get(user_id)
+        if user is not None:
+            return user.get(var_name)
+        else:
+            cur = self.scur(dictcur=True)
+
+            cur.execute(sql, (user_id,))
+            if cur.rowcount > 0:
+                user = cur.fetchone()
+                jdata = user.get("json_data")
+                jdata = json.loads(jdata)
+                self.shared_users[user_id] = jdata
+                return jdata.get(var_name)
+            else:
+                return None
+
+            self.ccur(cur)
+
 set_db = TidalSettings()
 users_db = AuthedUsers()
 admins_db = AuthedAdmins()
 chats_db = AuthedChats()
 music_db = MusicDB()
+user_settings = UserSettings()
