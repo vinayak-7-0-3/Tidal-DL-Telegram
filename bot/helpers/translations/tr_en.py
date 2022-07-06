@@ -150,3 +150,4 @@ Flags are :
     ERR_AUTH_CHECK = "Couldn't download because : {}"
     ERR_NO_LINK = "No link found in message."
     ERR_INDEX = "Error while indexing.\n\n{}"
+    ERR_API_KEY = "API Key Deprecated.\n\nPlease change your API Key Index."

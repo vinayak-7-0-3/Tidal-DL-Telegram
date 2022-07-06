@@ -6,6 +6,8 @@ from bot.helpers.database.postgres_impl import TidalSettings
 from bot.helpers.buttons.settings_buttons import tidal_auth_set
 from bot.helpers.utils.media_search import check_duplicate
 
+import bot.helpers.tidal_func.apikey as apiKey
+
 from bot.helpers.tidal_func.tidal import *
 from bot.helpers.tidal_func.enums import *
 from bot.helpers.tidal_func.download import *
@@ -183,3 +185,16 @@ async def start_album(obj: Album, bot, msg, c_id, r_id, u_id):
     await postCover(obj, bot, c_id, r_id)
     for item in tracks:
         await downloadTrack(item, obj, bot=bot, msg=msg, c_id=c_id, r_id=r_id, u_id=u_id)
+
+'''
+=================================
+TIDAL API CHECKS
+=================================
+'''
+
+async def checkAPI():
+    if not apiKey.isItemValid(SETTINGS.apiKeyIndex):
+        LOGGER.warning(lang.select.ERR_API_KEY)
+    else:
+        index = SETTINGS.apiKeyIndex
+        TIDAL_API.apiKey = apiKey.getItem(index)
