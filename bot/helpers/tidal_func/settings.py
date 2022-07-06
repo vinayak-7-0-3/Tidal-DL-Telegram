@@ -77,6 +77,11 @@ class Settings(aigpy.model.ModelBase):
         if self.apiKeyIndex is None:
             self.apiKeyIndex = 0
 
+        api_index, _ = set_db.get_variable("API_KEY_INDEX")
+        if api_index:
+            print("api_index:", api_index)
+            self.apiKeyIndex = int(api_index)
+
     def save(self):
         data = aigpy.model.modelToDict(self)
         data['audioQuality'] = self.audioQuality.name

@@ -198,3 +198,18 @@ async def checkAPI():
     else:
         index = SETTINGS.apiKeyIndex
         TIDAL_API.apiKey = apiKey.getItem(index)
+
+async def getapiInfo():
+    i = 0
+    platform = []
+    validity = []
+    quality = []
+    index = []
+    list = apiKey.__API_KEYS__
+    for item in list['keys']:
+        index.append(i)
+        platform.append(item['platform'])
+        validity.append(item['valid'])
+        quality.append(item['formats'])
+        i += 1
+    return index, platform, validity, quality

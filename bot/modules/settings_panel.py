@@ -7,7 +7,9 @@ from bot.helpers.buttons.settings_buttons import *
 from bot.helpers.tidal_func.settings import SETTINGS
 from bot.helpers.database.postgres_impl import set_db, user_settings
 
-from bot.helpers.tidal_func.events import checkLogin, loginByWeb
+import bot.helpers.tidal_func.apikey as apiKey
+
+from bot.helpers.tidal_func.events import checkAPI, checkLogin, getapiInfo, loginByWeb
 
 @Client.on_message(filters.command(CMD.SETTINGS))
 async def settings(bot, update):
@@ -143,4 +145,42 @@ async def set_tquality_cb(bot, update):
         text=lang.select.CHANGE_QUALITY.format(quality),
         reply_markup=user_set_buttons(quality, u_id)
     )
+    
+@Client.on_callback_query(filters.regex(pattern=r"^api_panel"))
+async def api_panel_cb(bot, update):
+    if check_id(update.from_user.id, restricted=True):
+        index, platform, validity, quality = await getapiInfo()
+        info = ""
+        for number in index:
+            info += f"<b>● {number} - {platform[number]}</b>\nFormats - <code>{quality[number]}</code>\nValid - <code>{validity[number]}</code>\n"
+
+        c_index = SETTINGS.apiKeyIndex 
+        await bot.edit_message_text(
+            chat_id=update.message.chat.id,
+            message_id=update.message.id,
+            text=lang.select.SELECT_API_KEY.format(
+                apiKey.getItem(c_index)['platform'],
+                apiKey.getItem(c_index)['formats'],
+                apiKey.getItem(c_index)['valid'],
+                info
+            ),
+            reply_markup=api_key_set(index, platform)
+        )
+
+@Client.on_callback_query(filters.regex(pattern=r"^setapi"))
+async def set_api_cb(bot, update):
+    if check_id(update.from_user.id, restricted=True):
+        index = int(update.data.split("_")[1])
+        set_db.set_variable("API_KEY_INDEX", index, False, None)
+        await update.answer(lang.select.API_KEY_CHANGED.format(
+            index,
+            apiKey.getItem(index)['platform'],
+            )
+        )
+        SETTINGS.read("./.tidal-dl.json")
+        await checkAPI()
+        try:
+            await api_panel_cb(bot, update)
+        except:
+            pass
     

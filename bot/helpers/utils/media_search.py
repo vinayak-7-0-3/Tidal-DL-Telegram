@@ -58,7 +58,7 @@ async def check_duplicate(title, artist, bot, c_id, r_id, etype=None):
                 inline_keyboard.append([InlineKeyboardButton(text=lang.select.JOIN_MUSIC_STORAGE, url=Config.MUSIC_CHANNEL_LINK)])
             await bot.send_message(
                 chat_id=c_id,
-                text=lang.FILE_EXIST.format(title),
+                text=lang.select.FILE_EXIST.format(title),
                 reply_to_message_id=r_id,
                 reply_markup=InlineKeyboardMarkup(inline_keyboard)
             )

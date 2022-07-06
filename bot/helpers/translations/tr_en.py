@@ -107,6 +107,17 @@ Flags are :
     REMOVED_AUTH_TIDAL = "Removed Tidal Login Successfully"
     CHANGE_QUALITY = "<b>Click to set the quality\n\nCurrent Quality :</b> <code>{}</code>"
     WRONG_USER_CLICK = "You are not allowed to click this button."
+    SELECT_API_KEY = """
+<b><u>API KEY SETTING PANEL</u></b>
+Current API Platform : <code>{0}</code>
+Available Formats : <code>{1}</code>
+API Key Valid : <code>{2}</code>
+
+<b><u>API PLATFORM INFO</u></b>
+{3}
+<b>RELOGIN NEEDED AFTER CHANGING API PLATFORM</b>
+"""
+    API_KEY_CHANGED = "API Key Changed Successfully To - {} - {}\nNow Relogin Tidal for the new api to work."
 #
 #
 # INDEXING
@@ -140,6 +151,7 @@ Flags are :
     MUSIC_C_JOIN = "Join Music Storage"
     LINK = "Link"
     SEARCH = "Search"
+    API_KEY_BUTTON = "API KEY"
 
 #
 #
@@ -150,4 +162,4 @@ Flags are :
     ERR_AUTH_CHECK = "Couldn't download because : {}"
     ERR_NO_LINK = "No link found in message."
     ERR_INDEX = "Error while indexing.\n\n{}"
-    ERR_API_KEY = "API Key Deprecated.\n\nPlease change your API Key Index."
+    ERR_API_KEY = "API Key Deprecated. Please change your API Key Index."

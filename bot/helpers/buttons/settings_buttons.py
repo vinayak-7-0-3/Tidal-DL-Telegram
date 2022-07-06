@@ -18,6 +18,12 @@ def main_menu_set():
         ],
         [
             InlineKeyboardButton(
+                text=lang.select.API_KEY_BUTTON,
+                callback_data="api_panel"
+            )
+        ],
+        [
+            InlineKeyboardButton(
                 text=lang.select.CLOSE,
                 callback_data="close"
             )
@@ -106,3 +112,15 @@ def quality_set(u_id):
     ]
     return InlineKeyboardMarkup(inline_keyboard)
 
+def api_key_set(index, platform):
+    inline_keyboard = []
+    for i in index:
+        inline_keyboard.append(
+            [
+                InlineKeyboardButton(text=f"{i} - {platform[i]}",
+                callback_data=f"setapi_{i}"
+                )
+            ]
+        )
+    inline_keyboard.append(exit_button)
+    return InlineKeyboardMarkup(inline_keyboard)
