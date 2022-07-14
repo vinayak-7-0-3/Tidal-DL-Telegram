@@ -21,7 +21,6 @@ async def search_media_audio(query):
     return title, artist, link
 
 async def check_file_exist_db(bot, title, artist, track_id, s_type, out=False):
-    print(title, artist, track_id, s_type)
     r_id, r_artist = music_db.get_music_id(title, artist, track_id, s_type)
     if r_id:
         if artist == r_artist:
@@ -62,8 +61,8 @@ async def index_audio_files(chat_id):
                         info.append(item)
                 if not await check_file_exist_db(None, info[0], info[1], None, "album"):
                     music_db.set_music(message.id, info[0], info[1], None, "album")
-    except:
-        pass
+    except Exception as e:
+        LOGGER.info(e)
             
 
 async def check_post_tg(title):
