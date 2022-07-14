@@ -141,7 +141,7 @@ async def start(string, bot, msg, c_id, r_id, u_id):
 
 async def start_type(etype: Type, obj, bot, msg, c_id, r_id, u_id):
     if etype == Type.Album and Config.SEARCH_CHANNEL:
-        check = await check_duplicate(obj.title, obj.artist.name, bot, c_id, r_id, etype)
+        check = await check_duplicate(obj.title, obj.artist.name, obj.id, bot, c_id, r_id, etype)
         if check:
             return
     if etype == Type.Album:
@@ -159,7 +159,7 @@ async def start_mix(obj: Mix, bot, msg, c_id, r_id, u_id):
     for index, item in enumerate(obj.tracks):
         album = TIDAL_API.getAlbum(item.album.id)
         item.trackNumberOnPlaylist = index + 1
-        await postCover(album, bot, c_id, r_id, False)
+        await postCover(album, bot, c_id, r_id)
         await downloadTrack(item, album, bot=bot, msg=msg, c_id=c_id, r_id=r_id, u_id=u_id)
 
 async def start_playlist(obj: Playlist, bot, msg, c_id, r_id, u_id):

@@ -1,3 +1,4 @@
+from cgitb import text
 from pyrogram import enums
 from bot import Config, USER, LOGGER
 from bot.helpers.translations import lang
@@ -19,8 +20,8 @@ async def search_media_audio(query):
             link.append(message.link)
     return title, artist, link
 
-async def check_file_exist_db(bot, title, artist, out=False):
-    r_id, r_artist = music_db.get_music_id(title, artist)
+async def check_file_exist_db(bot, title, artist, track_id, s_type, out=False):
+    r_id, r_artist = music_db.get_music_id(title, artist, track_id, s_type)
     if r_id:
         if artist == r_artist:
             if out:
@@ -34,7 +35,35 @@ async def index_audio_files(chat_id):
     async for message in USER.search_messages(chat_id=Config.SEARCH_CHANNEL, filter=enums.MessagesFilter.AUDIO):
         if message.audio:
             if not await check_file_exist_db(None, message.audio.title, message.audio.performer):
-                music_db.set_music(message.id, message.audio.title, message.audio.performer)
+                music_db.set_music(message.id, message.audio.title, message.audio.performer, None, "track")
+    # INDEXING ALBUM POSTS
+    # NOOB WAY (DONT BLAME ME)
+    try:
+        text = lang.select.ALBUM_DETAILS.replace("<b>", "").replace("</b>", "").split("\n")
+        to_replace = []
+        for item in text:
+            items = item.split(" ")
+            for i in items:
+                to_replace.append(i)
+        async for message in USER.search_messages(chat_id=Config.SEARCH_CHANNEL, filter=enums.MessagesFilter.PHOTO):
+            if message.photo:
+                caption = message.caption
+                for word in to_replace:
+                    caption = caption.replace(word, "")
+                text = caption.split("\n")
+                info = []
+                for item in text:
+                    while item.startswith(" "):
+                        item = item[1:]
+                    while item.endswith(" "):
+                        item = item[:-1]
+                    if item != "":
+                        info.append(item)
+                if not await check_file_exist_db(None, info[0], info[1], None, "album"):
+                    music_db.set_music(message.id, info[0], info[1], None, "album")
+    except:
+        pass
+            
 
 async def check_post_tg(title):
     if Config.USER_SESSION is not None and Config.USER_SESSION != "":
@@ -45,12 +74,15 @@ async def check_post_tg(title):
         LOGGER.info("No User Session Provided. Skipping Duplicate Check...")
         return False
 
-async def check_duplicate(title, artist, bot, c_id, r_id, etype=None):
+async def check_duplicate(title, artist, track_id,  bot, c_id, r_id, etype=None):
     try:
         if etype == Type.Album:
-            msg_link = await check_post_tg(title)
+            s_type = "album"
+        elif etype == Type.Track:
+            s_type = "track"
+            msg_link = await check_file_exist_db(bot, title, artist, track_id, s_type, True)
         else:
-            msg_link = await check_file_exist_db(bot, title, artist, True)
+            msg_link = await check_file_exist_db(bot, title, artist, None, None, True)
         if msg_link:
             inline_keyboard = []
             inline_keyboard.append([InlineKeyboardButton(text=lang.select.GET_FILE, url=msg_link)])

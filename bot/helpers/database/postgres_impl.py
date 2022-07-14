@@ -238,7 +238,9 @@ class MusicDB(DataBaseHandle):
         music_schema = """CREATE TABLE IF NOT EXISTS music_table (
             msg_id BIGINT UNIQUE,
             title VARCHAR(2000) DEFAULT NULL,
-            artist VARCHAR(2000) DEFAULT NULL
+            artist VARCHAR(2000) DEFAULT NULL,
+            track_id VARCHAR(50) DEFAULT NULL,
+            type VARCHAR(30) DEFAULT NULL
         )"""
 
         cur = self.scur()
@@ -250,17 +252,19 @@ class MusicDB(DataBaseHandle):
         self._conn.commit()
         self.ccur(cur)
 
-    def set_music(self, msg_id, title, artist):
+
+    # Type - "track" or "album"
+    def set_music(self, msg_id, title, artist, track_id, type):
         #title = ''.join(filter(lambda i:i not in special_characters, title))
         sql = "SELECT * FROM music_table"
         cur = self.scur()
 
-        sql = "INSERT INTO music_table(msg_id,title,artist) VALUES(%s,%s,%s)"
-        cur.execute(sql, (msg_id, title, artist))
+        sql = "INSERT INTO music_table(msg_id,title,artist,track_id,type) VALUES(%s,%s,%s,%s,%s)"
+        cur.execute(sql, (msg_id, title, artist, track_id, type))
 
         self.ccur(cur)
 
-    def get_music_id(self, title, artist):
+    def get_music_id(self, title, artist, track_id, type):
         sql = "SELECT * FROM music_table WHERE title=%s"
 
         cur = self.scur()
@@ -269,7 +273,11 @@ class MusicDB(DataBaseHandle):
             row = cur.fetchall()
             for item in row:
                 if item[2] == artist:
-                    return item[0], item[2]
+                    if track_id:
+                        if item[3] == int(track_id):
+                            return item[0], item[2]
+                    elif item[4] == type:
+                        return item[0], item[2]
         else:
             return None, None
 
