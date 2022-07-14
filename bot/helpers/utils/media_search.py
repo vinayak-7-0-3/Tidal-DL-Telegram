@@ -34,7 +34,7 @@ async def check_file_exist_db(bot, title, artist, track_id, s_type, out=False):
 async def index_audio_files(chat_id):
     async for message in USER.search_messages(chat_id=Config.SEARCH_CHANNEL, filter=enums.MessagesFilter.AUDIO):
         if message.audio:
-            if not await check_file_exist_db(None, message.audio.title, message.audio.performer):
+            if not await check_file_exist_db(None, message.audio.title, message.audio.performer, None, None):
                 music_db.set_music(message.id, message.audio.title, message.audio.performer, None, "track")
     # INDEXING ALBUM POSTS
     # NOOB WAY (DONT BLAME ME)
