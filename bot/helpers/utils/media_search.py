@@ -21,6 +21,7 @@ async def search_media_audio(query):
     return title, artist, link
 
 async def check_file_exist_db(bot, title, artist, track_id, s_type, out=False):
+    print(title, artist, track_id, s_type)
     r_id, r_artist = music_db.get_music_id(title, artist, track_id, s_type)
     if r_id:
         if artist == r_artist:
@@ -34,7 +35,7 @@ async def check_file_exist_db(bot, title, artist, track_id, s_type, out=False):
 async def index_audio_files(chat_id):
     async for message in USER.search_messages(chat_id=Config.SEARCH_CHANNEL, filter=enums.MessagesFilter.AUDIO):
         if message.audio:
-            if not await check_file_exist_db(None, message.audio.title, message.audio.performer, None, None):
+            if not await check_file_exist_db(None, message.audio.title, message.audio.performer, None, "track"):
                 music_db.set_music(message.id, message.audio.title, message.audio.performer, None, "track")
     # INDEXING ALBUM POSTS
     # NOOB WAY (DONT BLAME ME)

@@ -278,6 +278,8 @@ class MusicDB(DataBaseHandle):
                             return item[0], item[2]
                     elif item[4] == type:
                         return item[0], item[2]
+                else:
+                    return None, None
         else:
             return None, None
 
