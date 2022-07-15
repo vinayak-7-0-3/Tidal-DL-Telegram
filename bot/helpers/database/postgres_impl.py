@@ -260,7 +260,10 @@ class MusicDB(DataBaseHandle):
         cur = self.scur()
 
         sql = "INSERT INTO music_table(msg_id,title,artist,track_id,type) VALUES(%s,%s,%s,%s,%s)"
-        cur.execute(sql, (msg_id, title, artist, track_id, type))
+        try:
+            cur.execute(sql, (msg_id, title, artist, track_id, type))
+        except psycopg2.errors.UniqueViolation:
+            cur.execute("rollback")
 
         self.ccur(cur)
 
@@ -276,7 +279,7 @@ class MusicDB(DataBaseHandle):
                     if track_id:
                         if item[3] == int(track_id):
                             return item[0], item[2]
-                    elif item[4] == type:
+                    if item[4] == type:
                         return item[0], item[2]
         return None, None
 

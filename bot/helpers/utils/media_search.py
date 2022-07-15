@@ -74,15 +74,12 @@ async def check_post_tg(title):
         LOGGER.info("No User Session Provided. Skipping Duplicate Check...")
         return False
 
-async def check_duplicate(title, artist, track_id,  bot, c_id, r_id, etype=None):
+async def check_duplicate(title, artist, track_id, bot, c_id, r_id, etype=None):
     try:
         if etype == Type.Album:
-            s_type = "album"
-        elif etype == Type.Track:
-            s_type = "track"
-            msg_link = await check_file_exist_db(bot, title, artist, track_id, s_type, True)
+            msg_link = await check_file_exist_db(bot, title, artist, track_id, "album", True)
         else:
-            msg_link = await check_file_exist_db(bot, title, artist, None, None, True)
+            msg_link = await check_file_exist_db(bot, title, artist, None, "track", True)
         if msg_link:
             inline_keyboard = []
             inline_keyboard.append([InlineKeyboardButton(text=lang.select.GET_FILE, url=msg_link)])

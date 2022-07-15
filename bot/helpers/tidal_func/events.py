@@ -160,7 +160,7 @@ async def start_mix(obj: Mix, bot, msg, c_id, r_id, u_id):
         album = TIDAL_API.getAlbum(item.album.id)
         item.trackNumberOnPlaylist = index + 1
         await postCover(album, bot, c_id, r_id)
-        await downloadTrack(item, album, bot=bot, msg=msg, c_id=c_id, r_id=r_id, u_id=u_id)
+        await downloadTrack(item, album, bot=bot, c_id=c_id, r_id=r_id, u_id=u_id)
 
 async def start_playlist(obj: Playlist, bot, msg, c_id, r_id, u_id):
     tracks, videos = TIDAL_API.getItems(obj.uuid, Type.Playlist)
@@ -169,7 +169,7 @@ async def start_playlist(obj: Playlist, bot, msg, c_id, r_id, u_id):
         album = TIDAL_API.getAlbum(item.album.id)
         item.trackNumberOnPlaylist = index + 1
         #await postCover(album, bot, c_id, r_id)
-        await downloadTrack(item, album, obj, bot=bot, msg=msg, c_id=c_id, r_id=r_id, u_id=u_id)
+        await downloadTrack(item, album, obj, bot=bot, c_id=c_id, r_id=r_id, u_id=u_id)
 
 async def start_artist(obj: Artist, bot, msg, c_id, r_id, u_id):
     albums = TIDAL_API.getArtistAlbums(obj.id, SETTINGS.includeEP)
@@ -178,13 +178,14 @@ async def start_artist(obj: Artist, bot, msg, c_id, r_id, u_id):
 
 async def start_track(obj: Track, bot, msg, c_id, r_id, u_id):
     album = TIDAL_API.getAlbum(obj.album.id)
-    await downloadTrack(obj, album, bot=bot, msg=msg, c_id=c_id, r_id=r_id, u_id=u_id)
+    await downloadTrack(obj, album, bot=bot, c_id=c_id, r_id=r_id, u_id=u_id)
 
 async def start_album(obj: Album, bot, msg, c_id, r_id, u_id):
     tracks, videos = TIDAL_API.getItems(obj.id, Type.Album)
     await postCover(obj, bot, c_id, r_id)
-    for item in tracks:
-        await downloadTrack(item, obj, bot=bot, msg=msg, c_id=c_id, r_id=r_id, u_id=u_id)
+    await downloadTracks(tracks, obj, None, bot, c_id, r_id, u_id)
+    """for item in tracks:
+        await downloadTrack(item, obj, bot=bot, msg=msg, c_id=c_id, r_id=r_id, u_id=u_id)"""
 
 '''
 =================================
