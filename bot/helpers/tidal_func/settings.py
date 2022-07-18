@@ -79,7 +79,6 @@ class Settings(aigpy.model.ModelBase):
 
         api_index, _ = set_db.get_variable("API_KEY_INDEX")
         if api_index:
-            print("api_index:", api_index)
             self.apiKeyIndex = int(api_index)
 
     def save(self):

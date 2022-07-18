@@ -106,9 +106,10 @@ async def postCover(album, bot, c_id, r_id):
             reply_to_message_id=r_id
         )
         if Config.ALLOW_DUMP=="True":
-            await photo.copy(
+            copy = await photo.copy(
                 chat_id=Config.LOG_CHANNEL_ID,
             )
+            music_db.set_music(copy.id, album.title, album.artist.name, album.id, "album")
         os.remove(album_art_path)
 
 
@@ -141,10 +142,10 @@ def downloadAlbumInfo(album, tracks):
     aigpy.file.write(path, infos, "w+")
 
 async def downloadTrack(track: Track, album=None, playlist=None, userProgress=None, partSize=1048576, \
-    bot=None, msg=None, c_id=None, r_id=None, u_id=None):
+    bot=None, c_id=None, r_id=None, u_id=None):
     try:
         if Config.SEARCH_CHANNEL or Config.LOG_CHANNEL_ID:
-            check = await check_duplicate(track.title, track.artist.name, bot, c_id, r_id)
+            check = await check_duplicate(track.title, track.artist.name, track.id, bot, c_id, r_id, Type.Track)
             if check:
                 return
         quality = user_settings.get_var(u_id, "QUALITY")
@@ -193,7 +194,7 @@ async def downloadTrack(track: Track, album=None, playlist=None, userProgress=No
             chat_id=c_id,
             audio=path,
             duration=track.duration,
-            performer=TIDAL_API.getArtistsName(album.artists),
+            performer=TIDAL_API.getArtistsName(track.artists),
             title=track.title,
             thumb=thumb,
             reply_to_message_id=r_id
@@ -202,7 +203,7 @@ async def downloadTrack(track: Track, album=None, playlist=None, userProgress=No
             copy = await media_file.copy(
                 chat_id=Config.LOG_CHANNEL_ID,
             )
-            music_db.set_music(copy.id, track.title, track.artist.name)
+            music_db.set_music(copy.id, track.title, track.artist.name, track.id, "track")
 
         # Remove the files after uploading
         os.remove(thumb)
@@ -213,3 +214,16 @@ async def downloadTrack(track: Track, album=None, playlist=None, userProgress=No
     except Exception as e:
         LOGGER.warning(f"DL Track[{track.title}] failed.{str(e)}")
         return False, str(e)
+
+async def downloadTracks(tracks, album: Album = None, playlist : Playlist=None, \
+    bot=None, c_id=None, r_id=None, u_id=None):
+    def __getAlbum__(item: Track):
+        album = TIDAL_API.getAlbum(item.album.id)
+        return album
+    
+    for index, item in enumerate(tracks):
+        itemAlbum = album
+        if itemAlbum is None:
+            itemAlbum = __getAlbum__(item)
+            item.trackNumberOnPlaylist = index + 1
+        await downloadTrack(item, itemAlbum, playlist, bot=bot, c_id=c_id, r_id=r_id, u_id=u_id)
