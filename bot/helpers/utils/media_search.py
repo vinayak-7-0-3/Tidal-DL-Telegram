@@ -45,24 +45,24 @@ async def index_audio_files(chat_id):
             items = item.split(" ")
             for i in items:
                 to_replace.append(i)
-        async for message in USER.search_messages(chat_id=Config.SEARCH_CHANNEL, filter=enums.MessagesFilter.PHOTO):
-            if message.photo:
-                caption = message.caption
-                for word in to_replace:
-                    caption = caption.replace(word, "")
-                text = caption.split("\n")
-                info = []
-                for item in text:
-                    while item.startswith(" "):
-                        item = item[1:]
-                    while item.endswith(" "):
-                        item = item[:-1]
-                    if item != "":
-                        info.append(item)
-                if not await check_file_exist_db(None, info[0], info[1], None, "album"):
-                    music_db.set_music(message.id, info[0], info[1], None, "album")
-    except Exception as e:
-        LOGGER.info(e)
+    except:
+        return
+    async for message in USER.search_messages(chat_id=Config.SEARCH_CHANNEL, filter=enums.MessagesFilter.PHOTO):
+        if message.photo:
+            caption = message.caption
+            for word in to_replace:
+                caption = caption.replace(word, "")
+            text = caption.split("\n")
+            info = []
+            for item in text:
+                while item.startswith(" "):
+                    item = item[1:]
+                while item.endswith(" "):
+                    item = item[:-1]
+                if item != "":
+                    info.append(item)
+            if not await check_file_exist_db(None, info[0], info[1], None, "album"):
+                music_db.set_music(message.id, info[0], info[1], None, "album")
             
 
 async def check_post_tg(title):
