@@ -1,4 +1,3 @@
-from cgitb import text
 from pyrogram import enums
 from bot import Config, USER, LOGGER
 from bot.helpers.translations import lang

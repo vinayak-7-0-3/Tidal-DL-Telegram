@@ -3,6 +3,7 @@ from config import LOGGER
 from pyrogram import Client, filters
 from bot.helpers.translations import lang
 from bot.helpers.utils.auth_check import check_id
+from bot.helpers.utils.check_link import check_link
 
 from bot.helpers.tidal_func.events import checkLogin, start
 
@@ -18,6 +19,9 @@ async def download_tidal(bot, update):
                 reply_to_id = update.id
         except:
             link = None
+        
+        link = await check_link(link)
+
         if link:
             LOGGER.info(f"Download Initiated By - {update.from_user.first_name}")
             msg = await bot.send_message(
