@@ -9,6 +9,7 @@ Telegram bot to download Songs from Tidal.
 - Store downloaded songs to Channel/Group
 - Bot can configured for Public or Private use
 - Index Channel Feature for avoiding duplicate and search option
+- Auto convert other music platform link to Tidal link 
 
 **⚠️ Download Feature Won't Work Without A Tidal Premium Account ⚠️**
 
@@ -41,8 +42,8 @@ python -m bot
 - `TG_BOT_TOKEN` - The Telegram Bot Token. (Get from [@BotFather](https://t.me/BotFather))
 - `APP_ID` - Telegram account API ID. (Get it from [Telegram](https://my.telegram.org))
 - `API_HASH` - Telegram account API HASH String. (Get it from [Telegram](https://my.telegram.org))
-- `AUTH_CHAT` - List of Chat ID where Bot will work.
-- `ADMINS` - List of User ID who has full access to the Bot.
+- `AUTH_CHAT` - List of Chat ID where Bot will work. (Seperated by space)
+- `ADMINS` - List of User ID who has full access to the Bot. (Seperated by space)
 - `ALLOW_DUMP` - Whether to store the downloaded files in any group/channel. (True/False)
 - `IS_BOT_PUBLIC` - Whether to allow bot usage for public. (True/False)
 - `TIDAL_REGION` - Country code for Tidal Song search. (In international format eg:IN)
@@ -52,12 +53,13 @@ python -m bot
 
 **-> Optional variables**
 - `LOG_CHANNEL_ID` - Group/Channel ID where bot stores all the downloaded files (Mandatory if set ALLOW_DUMP = True)
-- `AUTH_USERS` - List of User ID who can use the bot (Only needed if IS_BOT_PUBLIC = False)
+- `AUTH_USERS` - List of User ID who can use the bot (Seperated by space) (Only needed if IS_BOT_PUBLIC = False)
 - `INLINE_THUMB` - Logo to be shown in inline search results. (Use CDN links for better performance)
 - `ENV` - Set to True if using ENV Variables.
 - `SEARCH_CHANNEL` - ID of channel/gropup to search downloaded/other songs files direcly
 - `USER_SESSION` - Telegram account session string. (Required for Searching and Indexing to work) (Generate from [HERE](https://replit.com/@vm703/Pyro-Session-Gen?lite=1&outputonly=1#main.py) or use any other Pyrogram Session Generator)
 - `MUSIC_CHANNEL_LINK` - For providing direct join link to the Music Storage Channel while searching for songs inline.
+- `ALLOW_OTHER_LINKS` - If to allow automatic conversion of other music platform links to Tidal links while downloading. (Current API has a limit of 10 conversion per minute) (True/False)
 
 
 
@@ -102,3 +104,4 @@ authed - Shows list of chats where bot is allowed to run
 
 ## Credits
 #### Yarronzz - For his [Tidal-dl CLI](https://github.com/yaronzz/Tidal-Media-Downloader)
+#### Odesli/Songlink - For [API](https://www.notion.so/API-d0ebe08a5e304a55928405eb682f6741)

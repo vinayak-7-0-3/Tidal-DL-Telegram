@@ -94,6 +94,11 @@
       "description": "Link to your music channel",
       "value": "",
       "required": false
+    },
+    "ALLOW_OTHER_LINKS": {
+      "description": "If to allow automatic conversion of other music platform links to Tidal links while downloading.",
+      "value": "False",
+      "required": false
     }
   },
   "formation": {
