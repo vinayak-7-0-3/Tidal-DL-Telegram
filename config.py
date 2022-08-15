@@ -78,6 +78,8 @@ class Config(object):
     MUSIC_CHANNEL_LINK = getenv("MUSIC_CHANNEL_LINK", "")
     BOT_LANGUAGE = getenv("BOT_LANGUAGE", "en")
 
+    ALLOW_OTHER_LINKS = getenv("ALLOW_OTHER_LINKS", False)
+
     if BOT_USERNAME.startswith("@"):
         BOT_USERNAME = BOT_USERNAME[1:]
     if ALLOW_DUMP == "True" and USER_SESSION is None:
