@@ -33,6 +33,7 @@ Feel free to ask doubts in Discussion Group.
 """
 
     INIT_DOWNLOAD = "Trying to initialize download..."
+    DOWNLOAD_DONE = "Download completed."
     FILE_EXIST = "File already exist in the channel.\n\nTitle : <code>{}</code>\n\nClick below to get file."
     ALREADY_AUTH = "Your authentication is already done.\nIts is valid for {}"
     NO_AUTH = "AUTH DISABLED"

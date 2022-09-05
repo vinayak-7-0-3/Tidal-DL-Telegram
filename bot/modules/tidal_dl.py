@@ -44,6 +44,11 @@ async def download_tidal(bot, update):
                 chat_id=update.chat.id,
                 message_ids=msg.id
             )
+            await bot.send_message(
+                chat_id=update.chat.id,
+                text=lang.select.DOWNLOAD_DONE,
+                reply_to_message_id=reply_to_id
+            )
         else:
             await bot.send_message(
                 chat_id=update.chat.id,

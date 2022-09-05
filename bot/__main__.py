@@ -1,45 +1,61 @@
 import os
-from pyrogram import Client
-from bot import Config, USER, LOGGER
+import asyncio
+import warnings
+
+from pyrogram import idle
+
+from bot import Config, USER, LOGGER, BOT
 from bot.helpers.utils.auth_check import get_chats
 from bot.helpers.tidal_func.events import checkAPI
+from bot.helpers.utils.file_dumping import dump_from_queue
 from bot.helpers.tidal_func.settings import SETTINGS, TOKEN
 
 plugins = dict(
     root="bot/modules"
 )
 
-class Bot(Client):
-    def __init__(self):
-        super().__init__(
-            "TidalDLBot",
-            api_id=Config.APP_ID,
-            api_hash=Config.API_HASH,
-            bot_token=Config.TG_BOT_TOKEN,
-            plugins=plugins,
-            workdir=Config.WORK_DIR
-        )
+async def start():
+    LOGGER.info('Loading Tidal DL Configs........')
+    SETTINGS.read("./.tidal-dl.json")
+    TOKEN.read("./tidal-dl.token.json")
+    await checkAPI()
+    if Config.USER_SESSION is not None and Config.USER_SESSION != "":
+        await USER.start()
+    LOGGER.info("Bot Started...... Now Enjoy")
+    await get_chats()
+    await BOT.start()
+    await idle()
 
-    async def start(self):
-        await super().start()
-        LOGGER.info('Loading Tidal DL Configs........')
-        SETTINGS.read("./.tidal-dl.json")
-        TOKEN.read("./tidal-dl.token.json")
-        await checkAPI()
-        if Config.USER_SESSION is not None and Config.USER_SESSION != "":
-            await USER.start()
-        LOGGER.info("Bot Started...... Now Enjoy")
-        await get_chats()
-
-    async def stop(self, *args):
-        await super().stop()
+def stop():
+    if Config.USER_SESSION is not None and Config.USER_SESSION != "":
         LOGGER.info('Exiting User........')
-        if Config.USER_SESSION is not None:
-            await USER.stop()
-        LOGGER.info('Bot and User Exited Successfully ! Bye..........')
+        USER.stop()
+    LOGGER.info('Bot and User Exited Successfully ! Bye..........')
+    BOT.stop()
 
 if __name__ == "__main__":
     if not os.path.isdir(Config.DOWNLOAD_BASE_DIR):
         os.makedirs(Config.DOWNLOAD_BASE_DIR)
-    app = Bot()
-    app.run()
+
+    with warnings.catch_warnings():
+        warnings.filterwarnings("ignore",category=DeprecationWarning)
+
+        loop = asyncio.get_event_loop()
+        
+        if Config.ALLOW_DUMP == "True":
+            dump = asyncio.ensure_future(dump_from_queue())
+        try:
+            loop.run_until_complete(start())
+        finally:
+            try:
+                dump.cancel()
+            except:
+                pass
+            stop()
+            loop.close()
+            
+        
+    
+
+
+

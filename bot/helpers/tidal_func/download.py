@@ -87,7 +87,7 @@ async def downloadThumb(album, r_id):
         LOGGER.warning(f"Download Cover Failed For The Album : {album.title}")
     return path
 
-async def postCover(album, bot, c_id, r_id):
+async def postCover(album, bot, c_id, r_id, dump):
     album_art_path = Config.DOWNLOAD_BASE_DIR + f"/thumb/{r_id}-ALBUM.jpg"
     album_art = TIDAL_API.getCoverUrl(album.cover, "1280", "1280")
     if album_art is not None:
@@ -106,12 +106,17 @@ async def postCover(album, bot, c_id, r_id):
             reply_to_message_id=r_id
         )
         if Config.ALLOW_DUMP=="True":
-            copy = await photo.copy(
-                chat_id=Config.LOG_CHANNEL_ID,
-            )
-            music_db.set_music(copy.id, album.title, album.artist.name, album.id, "album")
+            album_details = {
+                "msg_id": photo.id,
+                "chat_id": c_id,
+                "title": album.title,
+                "artist": album.artist.name,
+                "id": album.id,
+                "type": "album"
+            }
+            dump.append(album_details)
+            #music_db.set_music(copy.id, album.title, album.artist.name, album.id, "album")
         os.remove(album_art_path)
-
 
 
 def downloadAlbumInfo(album, tracks):
@@ -142,7 +147,7 @@ def downloadAlbumInfo(album, tracks):
     aigpy.file.write(path, infos, "w+")
 
 async def downloadTrack(track: Track, album=None, playlist=None, userProgress=None, partSize=1048576, \
-    bot=None, c_id=None, r_id=None, u_id=None):
+    bot=None, c_id=None, r_id=None, u_id=None, dump=None):
     try:
         if Config.SEARCH_CHANNEL or Config.LOG_CHANNEL_ID:
             check = await check_duplicate(track.title, track.artist.name, track.id, bot, c_id, r_id, Type.Track)
@@ -200,10 +205,19 @@ async def downloadTrack(track: Track, album=None, playlist=None, userProgress=No
             reply_to_message_id=r_id
         )
         if Config.ALLOW_DUMP=="True":
-            copy = await media_file.copy(
-                chat_id=Config.LOG_CHANNEL_ID,
-            )
-            music_db.set_music(copy.id, track.title, track.artist.name, track.id, "track")
+            track_details = {
+                "msg_id": media_file.id,
+                "chat_id": c_id,
+                "title": track.title,
+                "artist": track.artist.name,
+                "id": track.id,
+                "type": "track"
+            }
+            dump.append(track_details)
+            #copy = await media_file.copy(
+            #    chat_id=Config.LOG_CHANNEL_ID,
+            #)
+            #music_db.set_music(copy.id, track.title, track.artist.name, track.id, "track")
 
         # Remove the files after uploading
         os.remove(thumb)
@@ -216,7 +230,7 @@ async def downloadTrack(track: Track, album=None, playlist=None, userProgress=No
         return False, str(e)
 
 async def downloadTracks(tracks, album: Album = None, playlist : Playlist=None, \
-    bot=None, c_id=None, r_id=None, u_id=None):
+    bot=None, c_id=None, r_id=None, u_id=None, dump=None):
     def __getAlbum__(item: Track):
         album = TIDAL_API.getAlbum(item.album.id)
         return album
@@ -226,4 +240,4 @@ async def downloadTracks(tracks, album: Album = None, playlist : Playlist=None, 
         if itemAlbum is None:
             itemAlbum = __getAlbum__(item)
             item.trackNumberOnPlaylist = index + 1
-        await downloadTrack(item, itemAlbum, playlist, bot=bot, c_id=c_id, r_id=r_id, u_id=u_id)
+        await downloadTrack(item, itemAlbum, playlist, bot=bot, c_id=c_id, r_id=r_id, u_id=u_id, dump=dump)

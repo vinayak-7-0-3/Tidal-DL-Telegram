@@ -1,4 +1,5 @@
 import logging
+
 from config import Config
 from pyrogram import Client
 
@@ -14,6 +15,10 @@ logging.getLogger("aiohttp").setLevel(logging.WARNING)
 logging.getLogger("charset_normalizer").setLevel(logging.WARNING)
 
 bot = Config.BOT_USERNAME
+
+plugins = dict(
+    root="bot/modules"
+)
 
 class CMD(object):
     START = ["start", f"start@{bot}"]
@@ -36,4 +41,13 @@ USER = Client(
     session_string=Config.USER_SESSION,
     api_id=Config.APP_ID,
     api_hash=Config.API_HASH
+)
+
+BOT = Client(
+    "TidalDLBot",
+    api_id=Config.APP_ID,
+    api_hash=Config.API_HASH,
+    bot_token=Config.TG_BOT_TOKEN,
+    plugins=plugins,
+    workdir=Config.WORK_DIR
 )

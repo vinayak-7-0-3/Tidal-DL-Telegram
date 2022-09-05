@@ -2,9 +2,10 @@ import time
 import aigpy
 from bot import LOGGER
 from bot.helpers.translations import lang
-from bot.helpers.database.postgres_impl import TidalSettings
-from bot.helpers.buttons.settings_buttons import tidal_auth_set
+from bot.helpers.utils.file_dumping import add_queue
+from bot.helpers.database.postgres_impl import set_db
 from bot.helpers.utils.media_search import check_duplicate
+from bot.helpers.buttons.settings_buttons import tidal_auth_set
 
 import bot.helpers.tidal_func.apikey as apiKey
 
@@ -13,7 +14,6 @@ from bot.helpers.tidal_func.enums import *
 from bot.helpers.tidal_func.download import *
 from bot.helpers.tidal_func.settings import TokenSettings, TOKEN
 
-set_db = TidalSettings()
 
 def __displayTime__(seconds, granularity=2):
     if seconds <= 0:
@@ -121,6 +121,10 @@ async def checkLogin():
 '''
 =================================
 START DOWNLOAD
+
+r_id - message id of the reply
+u_id - user id of the user
+c_id - chat id of the chat
 =================================
 '''
 async def start(string, bot, msg, c_id, r_id, u_id):
@@ -140,50 +144,53 @@ async def start(string, bot, msg, c_id, r_id, u_id):
             LOGGER.warning(str(e))
 
 async def start_type(etype: Type, obj, bot, msg, c_id, r_id, u_id):
+    dump = []
     if etype == Type.Album and Config.SEARCH_CHANNEL:
         check = await check_duplicate(obj.title, obj.artist.name, obj.id, bot, c_id, r_id, etype)
         if check:
             return
     if etype == Type.Album:
-        await start_album(obj, bot, msg, c_id, r_id, u_id)
+        await start_album(obj, bot, msg, c_id, r_id, u_id, dump)
     elif etype == Type.Track:
-        await start_track(obj, bot, msg, c_id, r_id, u_id)
+        await start_track(obj, bot, msg, c_id, r_id, u_id, dump)
     elif etype == Type.Artist:
-        await start_artist(obj, bot, msg, c_id, r_id, u_id)
+        await start_artist(obj, bot, msg, c_id, r_id, u_id, dump)
     elif etype == Type.Playlist:
-        await start_playlist(obj, bot, msg, c_id, r_id, u_id)
+        await start_playlist(obj, bot, msg, c_id, r_id, u_id, dump)
     elif etype == Type.Mix:
-        await start_mix(obj, bot, msg, c_id, r_id, u_id)
+        await start_mix(obj, bot, msg, c_id, r_id, u_id, dump)
+    
+    await add_queue(dump)
 
-async def start_mix(obj: Mix, bot, msg, c_id, r_id, u_id):
+async def start_mix(obj: Mix, bot, msg, c_id, r_id, u_id, dump):
     for index, item in enumerate(obj.tracks):
         album = TIDAL_API.getAlbum(item.album.id)
         item.trackNumberOnPlaylist = index + 1
-        await postCover(album, bot, c_id, r_id)
-        await downloadTrack(item, album, bot=bot, c_id=c_id, r_id=r_id, u_id=u_id)
+        await postCover(album, bot, c_id, r_id, dump)
+        await downloadTrack(item, album, bot=bot, c_id=c_id, r_id=r_id, u_id=u_id, dump=dump)
 
-async def start_playlist(obj: Playlist, bot, msg, c_id, r_id, u_id):
+async def start_playlist(obj: Playlist, bot, msg, c_id, r_id, u_id, dump):
     tracks, videos = TIDAL_API.getItems(obj.uuid, Type.Playlist)
 
     for index, item in enumerate(tracks):
         album = TIDAL_API.getAlbum(item.album.id)
         item.trackNumberOnPlaylist = index + 1
         #await postCover(album, bot, c_id, r_id)
-        await downloadTrack(item, album, obj, bot=bot, c_id=c_id, r_id=r_id, u_id=u_id)
+        await downloadTrack(item, album, obj, bot=bot, c_id=c_id, r_id=r_id, u_id=u_id, dump=dump)
 
-async def start_artist(obj: Artist, bot, msg, c_id, r_id, u_id):
+async def start_artist(obj: Artist, bot, msg, c_id, r_id, u_id, dump):
     albums = TIDAL_API.getArtistAlbums(obj.id, SETTINGS.includeEP)
     for item in albums:
-        await start_album(item, bot, msg, c_id, r_id, u_id)
+        await start_album(item, bot, msg, c_id, r_id, u_id, dump)
 
-async def start_track(obj: Track, bot, msg, c_id, r_id, u_id):
+async def start_track(obj: Track, bot, msg, c_id, r_id, u_id, dump):
     album = TIDAL_API.getAlbum(obj.album.id)
-    await downloadTrack(obj, album, bot=bot, c_id=c_id, r_id=r_id, u_id=u_id)
+    await downloadTrack(obj, album, bot=bot, c_id=c_id, r_id=r_id, u_id=u_id, dump=dump)
 
-async def start_album(obj: Album, bot, msg, c_id, r_id, u_id):
+async def start_album(obj: Album, bot, msg, c_id, r_id, u_id, dump):
     tracks, videos = TIDAL_API.getItems(obj.id, Type.Album)
-    await postCover(obj, bot, c_id, r_id)
-    await downloadTracks(tracks, obj, None, bot, c_id, r_id, u_id)
+    await postCover(obj, bot, c_id, r_id, dump)
+    await downloadTracks(tracks, obj, None, bot, c_id, r_id, u_id, dump)
     """for item in tracks:
         await downloadTrack(item, obj, bot=bot, msg=msg, c_id=c_id, r_id=r_id, u_id=u_id)"""
 
