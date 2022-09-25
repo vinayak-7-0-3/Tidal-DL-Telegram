@@ -43,6 +43,7 @@ if __name__ == "__main__":
         loop = asyncio.get_event_loop()
         
         if Config.ALLOW_DUMP == "True":
+            LOGGER.info("QUEUE MODE TURNED ON")
             dump = asyncio.ensure_future(dump_from_queue())
         try:
             loop.run_until_complete(start())

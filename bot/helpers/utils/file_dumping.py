@@ -6,35 +6,33 @@ from config import Config
 from bot.helpers.database.postgres_impl import set_db, music_db
 
 async def add_queue(dump_list):
-    _, db_list = set_db.get_variable("QUEUE")
+    db_list, _ = set_db.get_variable("QUEUE")
     if db_list is None:
         main_list = []
     else:
-        main_list = bytes(db_list)
-        main_list = json.loads(main_list)
+        main_list = json.loads(db_list)
 
     main_list.append(dump_list)
     data = json.dumps(main_list)
-    set_db.set_variable("QUEUE", 0, True, data)
+    set_db.set_variable("QUEUE", data, False, None)
 
 async def dump_from_queue():
     while True:
         try:
-            await asyncio.sleep(10)
+            await asyncio.sleep(13)
         except asyncio.CancelledError:
             break
-        _, db_list = set_db.get_variable("QUEUE")
-        set_db.set_variable("QUEUE", 0, True, "[]")
+        db_list, _ = set_db.get_variable("QUEUE")
+        set_db.set_variable("QUEUE", "[]", False, None)
 
-        if db_list is None:
+        if db_list is None or db_list == "[]":
             continue
         else:
-            db_list = bytes(db_list)
             data = json.loads(db_list)
-            data_copy = data.copy()
+            data_copy = data[:]
             t = 0
             for task in data:
-                task_copy = task.copy()
+                task_copy = task[:]
                 t_index = data.index(task)
                 m = 0
                 try:
@@ -53,11 +51,11 @@ async def dump_from_queue():
                             data_copy.pop(t_index - t)
                             data_copy.insert(0, task_copy)
                             data = json.dumps(data_copy)
-                            set_db.set_variable("QUEUE", 0, True, data)
+                            set_db.set_variable("QUEUE", data, False, None)
                             return
                     data_copy.pop(t_index - t)
                     t+=1
                 except asyncio.CancelledError:
                     data = json.dumps(data_copy)
-                    set_db.set_variable("QUEUE", 0, True, data)
+                    set_db.set_variable("QUEUE", data, False, None)
                     return
