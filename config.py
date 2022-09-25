@@ -79,6 +79,7 @@ class Config(object):
     BOT_LANGUAGE = getenv("BOT_LANGUAGE", "en")
 
     ALLOW_OTHER_LINKS = getenv("ALLOW_OTHER_LINKS", False)
+    MENTION_USERS = getenv("MENTION_USERS", False)
 
     if BOT_USERNAME.startswith("@"):
         BOT_USERNAME = BOT_USERNAME[1:]

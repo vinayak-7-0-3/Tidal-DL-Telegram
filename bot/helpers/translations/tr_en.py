@@ -87,6 +87,9 @@ Flags are :
 🕒 <b>Duration :</b> {4}
 🔢 <b>Number of Volumes :</b> {5}
 """
+    # For keeping the fancy designs
+    USER_MENTION_ALBUM = "❤️ <b>Requested by :</b> {}"
+    USER_MENTION_TRACK = "Requested by {}"
 #
 #
 # CHATS AUTH MSGS

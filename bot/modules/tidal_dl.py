@@ -29,9 +29,15 @@ async def download_tidal(bot, update):
                 reply_to_message_id=update.id
             )
             botmsg_id = msg.id
+            
+            if update.from_user.username:
+                u_name = f"@{update.from_user.username}"
+            else:
+                u_name = f'<a href="tg://user?id={update.from_user.id}">{update.from_user.first_name}</a>'
+
             auth, err = await checkLogin()
             if auth:
-                await start(link, bot, update, update.chat.id, reply_to_id, update.from_user.id)
+                await start(link, bot, update, update.chat.id, reply_to_id, update.from_user.id, u_name)
             else:
                 await bot.edit_message_text(
                     chat_id=update.chat.id,

@@ -60,6 +60,7 @@ python -m bot
 - `USER_SESSION` - Telegram account session string. (Required for Searching and Indexing to work) (Generate from [HERE](https://replit.com/@vm703/Pyro-Session-Gen?lite=1&outputonly=1#main.py) or use any other Pyrogram Session Generator)
 - `MUSIC_CHANNEL_LINK` - For providing direct join link to the Music Storage Channel while searching for songs inline.
 - `ALLOW_OTHER_LINKS` - If to allow automatic conversion of other music platform links to Tidal links while downloading. (Current API has a limit of 10 conversion per minute) (True/False)
+- `MENTION_USERS` - If to mention users for their corresponding tasks posted. (True/False)
 
 
 
