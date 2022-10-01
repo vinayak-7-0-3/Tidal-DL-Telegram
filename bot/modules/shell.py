@@ -4,12 +4,12 @@ from pyrogram import Client, filters
 from bot.helpers.utils.auth_check import check_id
 
 @Client.on_message(filters.command(CMD.SHELL))
-def shell(bot, update):
-    if check_id(update.from_user.id, restricted=True):
+async def shell(bot, update):
+    if await check_id(update.from_user.id, restricted=True):
         message = update.text
         cmd = update.text.split(' ', 1)
         if len(cmd) == 1:
-            update.reply_text('No command to execute was given.')
+            await update.reply_text('No command to execute was given.')
             return
         cmd = cmd[1]
         process = subprocess.Popen(
@@ -26,10 +26,10 @@ def shell(bot, update):
             with open('shell_output.txt', 'w') as file:
                 file.write(reply)
             with open('shell_output.txt', 'rb') as doc:
-                bot.send_document(
+                await bot.send_document(
                     document=doc,
                     filename=doc.name,
                     reply_to_message_id=message.id,
                     chat_id=message.chat.id)
         else:
-            update.reply_text(reply)
+            await update.reply_text(reply)
