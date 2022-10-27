@@ -105,3 +105,6 @@ authed - Shows list of chats where bot is allowed to run
 ## Credits
 #### Yarronzz - For his [Tidal-dl CLI](https://github.com/yaronzz/Tidal-Media-Downloader)
 #### Odesli/Songlink - For [API](https://www.notion.so/API-d0ebe08a5e304a55928405eb682f6741)
+
+## Support Me
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/I2I7FWQZ4)
