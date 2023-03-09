@@ -28,7 +28,7 @@ class Bot(Client):
         await checkAPI()
         if Config.USER_SESSION is not None and Config.USER_SESSION != "":
             await USER.start()
-        LOGGER.info("❤ TIDAL-DL BOT v2.1 STARTED SUCCESSFULLY ❤")
+        LOGGER.info("❤ TIDAL-DL BOT v2.2 STARTED SUCCESSFULLY ❤")
         if Config.ANIT_SPAM_MODE == "True":
             LOGGER.info("ANTI-SPAM MODE ON")
         await get_chats()
