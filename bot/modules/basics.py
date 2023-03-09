@@ -57,7 +57,7 @@ async def cmd_list(bot, update):
 
 @Client.on_message(filters.command(CMD.AUTH))
 async def auth_chat(bot, update):
-    if check_id(update.from_user.id, restricted=True):
+    if await check_id(update.from_user.id, restricted=True):
         if update.reply_to_message:
             chat_id = update.reply_to_message.from_user.id
         else:
@@ -83,7 +83,7 @@ async def auth_chat(bot, update):
 
 @Client.on_message(filters.command(CMD.ADD_ADMIN))
 async def add_admin(bot, update):
-    if check_id(update.from_user.id, restricted=True):
+    if await check_id(update.from_user.id, restricted=True):
         if update.reply_to_message:
             admin_id = update.reply_to_message.from_user.id
         else:
@@ -117,7 +117,7 @@ async def add_admin(bot, update):
 
 @Client.on_message(filters.command(CMD.INDEX))
 async def index_files(bot, update):
-    if check_id(update.from_user.id, restricted=True):
+    if await check_id(update.from_user.id, restricted=True):
         if Config.SEARCH_CHANNEL and Config.USER_SESSION not in ["", None]:
             init = await bot.send_message(
                 chat_id=update.chat.id,

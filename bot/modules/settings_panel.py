@@ -13,7 +13,7 @@ from bot.helpers.tidal_func.events import checkAPI, checkLogin, getapiInfo, logi
 
 @Client.on_message(filters.command(CMD.SETTINGS))
 async def settings(bot, update):
-    if check_id(update.from_user.id, restricted=True):
+    if await check_id(update.from_user.id, restricted=True):
         await bot.send_message(
             chat_id=update.chat.id,
             text=lang.select.INIT_SETTINGS_MENU,
@@ -31,7 +31,7 @@ async def settings(bot, update):
 
 @Client.on_callback_query(filters.regex(pattern=r"^tg_panel"))
 async def tg_panel_cb(bot, update):
-    if check_id(update.from_user.id, restricted=True):
+    if await check_id(update.from_user.id, restricted=True):
         msg = await get_chats(True)
         await bot.edit_message_text(
             chat_id=update.message.chat.id,
@@ -53,7 +53,7 @@ async def tidal_panel_cb(bot, update):
 
 @Client.on_callback_query(filters.regex(pattern=r"^tiset_warn_auth"))
 async def tiset_warn_auth_cb(bot, update):
-    if check_id(update.from_user.id, restricted=True):
+    if await check_id(update.from_user.id, restricted=True):
         await bot.edit_message_text(
             chat_id=update.message.chat.id,
             message_id=update.message.id,
@@ -63,7 +63,7 @@ async def tiset_warn_auth_cb(bot, update):
 
 @Client.on_callback_query(filters.regex(pattern=r"^tiset_remove_auth"))
 async def tiset_remove_auth_cb(bot, update):
-    if check_id(update.from_user.id, restricted=True):
+    if await check_id(update.from_user.id, restricted=True):
         set_db.set_variable("AUTH_TOKEN", 0, True, None)
         set_db.set_variable("AUTH_DONE", False, False, None)
         try:
@@ -78,14 +78,14 @@ async def tiset_remove_auth_cb(bot, update):
 
 @Client.on_callback_query(filters.regex(pattern=r"^tiset_add_auth"))
 async def tiset_add_auth_cb(bot, update):
-    if check_id(update.from_user.id, restricted=True):
+    if await check_id(update.from_user.id, restricted=True):
         c_id = update.message.chat.id
         await loginByWeb(bot, update, c_id)
         set_db.set_variable("AUTH_DONE", True, False, None)
 
 @Client.on_callback_query(filters.regex(pattern=r"^close"))
 async def close_cb(bot, update):
-    if check_id(update.from_user.id, restricted=True):
+    if await check_id(update.from_user.id, restricted=True):
         try:
             await bot.delete_messages(
                 chat_id=update.message.chat.id,
@@ -106,7 +106,7 @@ async def close_cb(bot, update):
 
 @Client.on_callback_query(filters.regex(pattern=r"^main_menu"))
 async def main_menu_cb(bot, update):
-    if check_id(update.from_user.id, restricted=True):
+    if await check_id(update.from_user.id, restricted=True):
         try:
             await bot.edit_message_text(
                 chat_id=update.message.chat.id,
@@ -148,7 +148,7 @@ async def set_tquality_cb(bot, update):
     
 @Client.on_callback_query(filters.regex(pattern=r"^api_panel"))
 async def api_panel_cb(bot, update):
-    if check_id(update.from_user.id, restricted=True):
+    if await check_id(update.from_user.id, restricted=True):
         index, platform, validity, quality = await getapiInfo()
         info = ""
         for number in index:
@@ -169,7 +169,7 @@ async def api_panel_cb(bot, update):
 
 @Client.on_callback_query(filters.regex(pattern=r"^setapi"))
 async def set_api_cb(bot, update):
-    if check_id(update.from_user.id, restricted=True):
+    if await check_id(update.from_user.id, restricted=True):
         index = int(update.data.split("_")[1])
         set_db.set_variable("API_KEY_INDEX", index, False, None)
         await update.answer(lang.select.API_KEY_CHANGED.format(

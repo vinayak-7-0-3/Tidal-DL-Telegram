@@ -87,23 +87,28 @@ async def downloadThumb(album, r_id):
         LOGGER.warning(f"Download Cover Failed For The Album : {album.title}")
     return path
 
-async def postCover(album, bot, c_id, r_id):
+async def postCover(album, bot, c_id, r_id, u_name):
     copy = None
     album_art_path = Config.DOWNLOAD_BASE_DIR + f"/thumb/{r_id}-ALBUM.jpg"
     album_art = TIDAL_API.getCoverUrl(album.cover, "1280", "1280")
     if album_art is not None:
         aigpy.net.downloadFile(album_art, album_art_path)
-        photo = await bot.send_photo(
-            chat_id=c_id,
-            photo=album_art_path,
-            caption=lang.select.ALBUM_DETAILS.format(
+
+        post_details = lang.select.ALBUM_DETAILS.format(
                 album.title,
                 album.artist.name,
                 album.releaseDate,
                 album.numberOfTracks,
                 album.duration,
                 album.numberOfVolumes
-            ),
+            )
+        if Config.MENTION_USERS == "True":
+            post_details = post_details + lang.select.USER_MENTION_ALBUM.format(u_name)
+
+        photo = await bot.send_photo(
+            chat_id=c_id,
+            photo=album_art_path,
+            caption=post_details,
             reply_to_message_id=r_id
         )
         if Config.ALLOW_DUMP=="True":
@@ -143,7 +148,8 @@ def downloadAlbumInfo(album, tracks):
     aigpy.file.write(path, infos, "w+")
 
 async def downloadTrack(track: Track, album=None, playlist=None, userProgress=None, partSize=1048576, \
-    bot=None, c_id=None, r_id=None, u_id=None, dmrem_id=None):
+    bot=None, c_id=None, r_id=None, u_id=None, u_name=None, dmrem_id=None):
+    
     try:
         if Config.SEARCH_CHANNEL or Config.LOG_CHANNEL_ID:
             check = await check_duplicate(track.title, track.artist.name, track.id, bot, c_id, r_id, Type.Track)
@@ -191,9 +197,15 @@ async def downloadTrack(track: Track, album=None, playlist=None, userProgress=No
 
         thumb = await downloadThumb(album, r_id)
 
+        if Config.MENTION_USERS == "True" and u_name != None:
+            u_name = lang.select.USER_MENTION_TRACK.format(u_name)
+        else:
+            u_name = None
+
         media_file = await bot.send_audio(
             chat_id=c_id,
             audio=path,
+            caption=u_name,
             duration=track.duration,
             performer=TIDAL_API.getArtistsName(track.artists),
             title=track.title,

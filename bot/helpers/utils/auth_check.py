@@ -1,5 +1,6 @@
 from bot import Config
-from bot.helpers.database.postgres_impl import users_db, admins_db, chats_db
+from bot.helpers.translations import lang
+from bot.helpers.database.postgres_impl import users_db, admins_db, chats_db, user_settings
 
 allowed_chats = []
 allowed_users = []
@@ -57,7 +58,7 @@ async def get_chats(return_msg=False):
 
         return msg
 
-def check_id(id=None, message=None, restricted=False):
+async def check_id(id=None, message=None, restricted=False):
     all_list = allowed_chats + allowed_users + admins
     if restricted:
         if id in admins:
@@ -65,10 +66,18 @@ def check_id(id=None, message=None, restricted=False):
         else:
             return False
     else:
+        # Seperating Group and PM
         if message.from_user.id != message.chat.id:
             id = message.chat.id
         else:
             id = message.from_user.id
+
+        if Config.ANIT_SPAM_MODE == "True":
+            check = user_settings.get_var(id, "ON_TASK")      
+            if check:
+                await message.reply_text(lang.select.ANTI_SPAM_WAIT)
+                return False          
+
         if Config.IS_BOT_PUBLIC == "True":
             return True
         elif id in all_list:

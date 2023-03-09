@@ -80,6 +80,11 @@ class Config(object):
 
     ALLOW_OTHER_LINKS = getenv("ALLOW_OTHER_LINKS", False)
 
+    MENTION_USERS = getenv("MENTION_USERS", False)
+
+    ANIT_SPAM_MODE = getenv("ANIT_SPAM_MODE", False)
+
+
     if BOT_USERNAME.startswith("@"):
         BOT_USERNAME = BOT_USERNAME[1:]
     if ALLOW_DUMP == "True" and USER_SESSION is None:
