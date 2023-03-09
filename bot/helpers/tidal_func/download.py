@@ -117,7 +117,7 @@ async def postCover(album, bot, c_id, r_id, u_name):
             )
             music_db.set_music(copy.id, album.title, album.artist.name, album.id, "album")
         os.remove(album_art_path)
-    return copy
+    return copy.id
 
 
 def downloadAlbumInfo(album, tracks):
