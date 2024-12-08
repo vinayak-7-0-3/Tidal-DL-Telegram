@@ -40,12 +40,12 @@ __KEYS_JSON__ = '''
             "from": ""
         },
         {
-            "platform": "TV",
+            "platform": "Fire TV",
             "formats": "Normal/High/HiFi/Master",
-            "clientId": "8SEZWa4J1NVC5U5Y",
-            "clientSecret": "owUYDkxddz+9FpvGX24DlxECNtFEMBxipU0lBfrbq60=",
-            "valid": "False",
-            "from": "morguldir (https://github.com/morguldir/python-tidal/commit/50f1afcd2079efb2b4cf694ef5a7d67fdf619d09)"
+            "clientId": "zU4XHVVkc2tDPo4t",
+            "clientSecret": "VJKhDFqJPqvsPVNBV6ukXTJmwlvbttP7wlMlrc72se4=",
+            "valid": "True",
+            "from": "https://github.com/oskvr37/tiddl/blob/main/tiddl/auth.py"
         },
         {
             "platform": "Android Auto",
@@ -98,11 +98,11 @@ def getVersion():
     return __API_KEYS__['version']
 
 
-# Load from gist
+"""# Load from gist
 try:
     respond = requests.get('https://api.github.com/gists/48d01f5a24b4b7b37f19443977c22cd6')
     if respond.status_code == 200:
         content = respond.json()['files']['tidal-api-key.json']['content']
         __API_KEYS__ = json.loads(content)
 except:
-    pass
+    pass"""

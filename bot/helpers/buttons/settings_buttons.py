@@ -81,6 +81,12 @@ def quality_set(u_id):
     inline_keyboard = [
         [
             InlineKeyboardButton(
+                text=lang.select.TIDAL_QUALITY_MAX,
+                callback_data="setq_Max_" + str(u_id)
+            )
+        ],
+        [
+            InlineKeyboardButton(
                 text=lang.select.TIDAL_QUALITY_MASTER,
                 callback_data="setq_Master_" + str(u_id)
             )

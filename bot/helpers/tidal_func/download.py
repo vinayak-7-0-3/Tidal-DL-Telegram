@@ -1,13 +1,3 @@
-#!/usr/bin/env python
-# -*- encoding: utf-8 -*-
-'''
-@File    :   download.py
-@Time    :   2020/11/08
-@Author  :   Yaronzz
-@Version :   1.0
-@Contact :   yaronhuang@foxmail.com
-@Desc    :   
-'''
 import os
 import aigpy
 
@@ -116,8 +106,9 @@ async def postCover(album, bot, c_id, r_id, u_name):
                 chat_id=Config.LOG_CHANNEL_ID,
             )
             music_db.set_music(copy.id, album.title, album.artist.name, album.id, "album")
+            copy = copy.id
         os.remove(album_art_path)
-    return copy.id
+    return copy
 
 
 def downloadAlbumInfo(album, tracks):
@@ -167,7 +158,7 @@ async def downloadTrack(track: Track, album=None, playlist=None, userProgress=No
         # download
         #logging.info("[DL Track] name=" + aigpy.path.getFileName(path) + "\nurl=" + stream.url)
 
-        tool = aigpy.download.DownloadTool(path + '.part', [stream.url])
+        tool = aigpy.download.DownloadTool(path + '.part', stream.urls)
         tool.setUserProgress(userProgress)
         tool.setPartSize(partSize)
         check, err = tool.start(SETTINGS.showProgress)

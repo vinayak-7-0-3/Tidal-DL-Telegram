@@ -1,13 +1,3 @@
-#!/usr/bin/env python
-# -*- encoding: utf-8 -*-
-'''
-@File    :   settings.py
-@Time    :   2020/11/08
-@Author  :   Yaronzz
-@Version :   3.0
-@Contact :   yaronhuang@foxmail.com
-@Desc    :
-'''
 import json
 import aigpy
 import base64
@@ -30,7 +20,6 @@ class Settings(aigpy.model.ModelBase):
 
     downloadPath = "./bot/DOWNLOADS/"
     audioQuality = AudioQuality.Master
-    videoQuality = VideoQuality.P360
     usePlaylistFolder = True
     albumFolderFormat = R"{ArtistName}/{Flag} {AlbumTitle} [{AlbumID}] [{AlbumYear}]"
     trackFileFormat = R"{TrackNumber} - {ArtistName} - {TrackTitle}{ExplicitFlag}"
@@ -66,7 +55,6 @@ class Settings(aigpy.model.ModelBase):
                 return
 
         self.audioQuality = self.getAudioQuality(self.audioQuality)
-        self.videoQuality = self.getVideoQuality(self.videoQuality)
 
         if self.albumFolderFormat is None:
             self.albumFolderFormat = self.getDefaultPathFormat(Type.Album)
@@ -129,6 +117,5 @@ class TokenSettings(aigpy.model.ModelBase):
         aigpy.file.write(self._path_, self.__encode__(txt), 'wb')
 
 
-# Singleton
 SETTINGS = Settings()
 TOKEN = TokenSettings()

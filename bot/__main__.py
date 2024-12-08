@@ -22,9 +22,12 @@ class Bot(Client):
 
     async def start(self):
         await super().start()
+
         LOGGER.info('Loading Tidal DL Configs........')
+
         SETTINGS.read("./.tidal-dl.json")
         TOKEN.read("./tidal-dl.token.json")
+        
         await checkAPI()
         if Config.USER_SESSION is not None and Config.USER_SESSION != "":
             await USER.start()

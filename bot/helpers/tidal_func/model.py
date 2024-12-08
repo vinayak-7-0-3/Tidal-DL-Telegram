@@ -1,13 +1,3 @@
-#!/usr/bin/env python
-# -*- encoding: utf-8 -*-
-'''
-@File    :   model.py
-@Time    :   2020/08/08
-@Author  :   Yaronzz
-@Version :   3.0
-@Contact :   yaronhuang@foxmail.com
-@Desc    :   
-'''
 import aigpy
 
 class StreamUrl(aigpy.model.ModelBase):
@@ -15,18 +5,10 @@ class StreamUrl(aigpy.model.ModelBase):
         super().__init__()
         self.trackid = None
         self.url = None
+        self.urls = None
         self.codec = None
         self.encryptionKey = None
         self.soundQuality = None
-
-
-class VideoStreamUrl(aigpy.model.ModelBase):
-    def __init__(self) -> None:
-        super().__init__()
-        self.codec = None
-        self.resolution = None
-        self.resolutions = None
-        self.m3u8Url = None
 
 
 class Artist(aigpy.model.ModelBase):
@@ -91,24 +73,6 @@ class Track(aigpy.model.ModelBase):
         self.allowStreaming = False
         self.playlist = None
 
-
-class Video(aigpy.model.ModelBase):
-    def __init__(self) -> None:
-        super().__init__()
-        self.id = None
-        self.title = None
-        self.duration = 0
-        self.imageID = None
-        self.trackNumber = 0
-        self.releaseDate = None
-        self.version = None
-        self.quality = None
-        self.explicit = False
-        self.artist = Artist()
-        self.artists = Artist()
-        self.album = Album()
-        self.allowStreaming = False
-        self.playlist = None
 
 
 class Mix(aigpy.model.ModelBase):

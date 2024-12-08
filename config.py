@@ -17,7 +17,7 @@ class Config(object):
         TG_BOT_TOKEN = getenv("TG_BOT_TOKEN")
         APP_ID = int(getenv("APP_ID", 123))
         API_HASH = getenv("API_HASH")
-       
+        ADMINS = set(int(x) for x in getenv("ADMINS").split())
     except:
         LOGGER.warning("Essential TG Configs are missing")
         exit(1)
@@ -28,11 +28,6 @@ class Config(object):
         AUTH_CHAT = set(int(x) for x in getenv("AUTH_CHAT").split())
     except:
         AUTH_CHAT = ""
-    try:
-        ADMINS = set(int(x) for x in getenv("ADMINS").split())
-    except:
-        LOGGER.warning("NO ADMIN USER IDS FOUND")
-        exit(1)
 
     try:
         LOG_CHANNEL_ID = int(getenv("LOG_CHANNEL_ID"))

@@ -1,13 +1,3 @@
-#!/usr/bin/env python
-# -*- encoding: utf-8 -*-
-"""
-@File    :  paths.py
-@Date    :  2022/06/10
-@Author  :  Yaronzz
-@Version :  1.0
-@Contact :  yaronhuang@foxmail.com
-@Desc    :  
-"""
 import aigpy
 import datetime
 
@@ -38,6 +28,8 @@ def __getExtension__(stream: StreamUrl):
     if '.mp4' in stream.url:
         if 'ac4' in stream.codec or 'mha1' in stream.codec:
             return '.mp4'
+        elif 'flac' in stream.codec:
+            return '.flac'
         return '.m4a'
     return '.m4a'
 
@@ -134,41 +126,6 @@ def getTrackPath(track, stream, album=None, playlist=None):
     retpath = retpath.strip()
     return f"{base}/{retpath}{extension}"
 
-
-def getVideoPath(video, album=None, playlist=None):
-    base = SETTINGS.downloadPath + '/Video/'
-    if album is not None and album.title is not None:
-        base = getAlbumPath(album)
-    elif playlist is not None:
-        base = getPlaylistPath(playlist)
-
-    # get number
-    number = str(video.trackNumber).rjust(2, '0')
-
-    # get artist
-    artists = __fixPath__(TIDAL_API.getArtistsName(video.artists))
-    artist = __fixPath__(video.artist.name) if video.artist is not None else ""
-
-    # explicit
-    explicit = "(Explicit)" if video.explicit else ''
-
-    # title and year and extension
-    title = __fixPath__(video.title)
-    year = __getYear__(video.releaseDate)
-    extension = ".mp4"
-
-    retpath = SETTINGS.videoFileFormat
-    if retpath is None or len(retpath) <= 0:
-        retpath = SETTINGS.getDefaultVideoFileFormat()
-    retpath = retpath.replace(R"{VideoNumber}", number)
-    retpath = retpath.replace(R"{ArtistName}", artist)
-    retpath = retpath.replace(R"{ArtistsName}", artists)
-    retpath = retpath.replace(R"{VideoTitle}", title)
-    retpath = retpath.replace(R"{ExplicitFlag}", explicit)
-    retpath = retpath.replace(R"{VideoYear}", year)
-    retpath = retpath.replace(R"{VideoID}", str(video.id))
-    retpath = retpath.strip()
-    return f"{base}/{retpath}{extension}"
 
 def getLogPath():
     return './.tidal-dl.log'
