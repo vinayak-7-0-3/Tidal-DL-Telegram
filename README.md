@@ -1,3 +1,7 @@
+# ⚠️THIS REPO IS NOT MAINTAINED ANYMORE⚠️
+# ⚠️USE THE NEW REPO [Project-Siesta](https://github.com/vinayak-7-0-3/Project-Siesta) FOR STABLE AND FASTER DOWNLOADS⚠️
+
+
 # Tidal-DL-Bot-TG
 Telegram bot to download Songs from Tidal.
 
